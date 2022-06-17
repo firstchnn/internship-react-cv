@@ -1,0 +1,189 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+button {
+  font-size: calc(10px + 2vmin);
+}
+
+.navbar-app{
+  height:7vh;
+}
+
+.footer-container{
+  padding : 1rem;
+  background-color: #333;
+  color : white;
+  position: fixed;
+  bottom:0;
+  height:7vh;
+  width: 100%;
+}
+
+.home-body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:86vh;
+
+}
+
+.searchApp-body{
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  height:86vh;
+  margin-bottom : 7vh;
+
+}
+
+.home-body-header{
+  padding:1rem;
+  margin-bottom: 5rem;
+}
+
+.home-col {
+  cursor: pointer;
+  transition : 0.3s;
+  margin-bottom:7vh;
+}
+.home-col:hover{
+  transform : scale(1.5);
+}
+
+.styleCard {
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px #ccc;
+  color: #253b56;
+  margin: 12px 0px;
+}
+
+.styleCardContent {
+  padding: 4px 16px 20px 16px;
+}
+
+.styleImage {
+  background-color: lightGray;
+  border-radius: 8px 8px 0 0;
+  max-height: 140px;
+  overflow: hidden;
+}
+
+.styleCardTitle {
+  /* font-family: Avenir-Heavy; */
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  margin: 12px 0px 0px 0px;
+}
+
+.styleLocationLabel {
+  color: #8294aa;
+  font-size: 14;
+  margin: 4px 0;
+}
+
+.styleDescription {
+  font-size: 14;
+  margin: 8px 0 0 0;
+}
+
+.bw {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+}
+
+.applicants{
+  background-color:#E28413;
+}
+
+.applicant-col{
+  width:30%;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
+.pdf-result{
+  width: 100%;
+  height: 20vh;
+}
+
+.row-extract-img{
+  height:50%;
+  /* background : #E28413 */
+}
+
+.row-extract-pdf{
+  /* margin-top: 3rem; */
+  height:70%;
+  /* background : #E28413 */
+}
+
+.pdf-viewer{
+  width: 100%;
+  height : 86vh;
+}
+
+.newApp-form{
+  display: block;
+}
+
+.filter-btn{
+  width: 60%;
+  height : 2.5rem;
+  border:none;
+  border-radius: 8px;
+}
+
+.filter-panel{
+  margin-top : 1rem;
+}
+
+.filter-header-btn{
+  margin-left:1rem;
+  height: 70%;
+}
+
+.cv-btn{
+  height: 5rem;
+  width: 60%;
+  border:none;
+  border-radius: 8px;
+}
