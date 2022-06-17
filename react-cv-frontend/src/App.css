@@ -45,6 +45,24 @@ button {
   height:7vh;
 }
 
+.nav-items{
+  width:9.5rem;
+  padding:0;
+  border-radius: 10px;
+  transition: background-color 0.3s ease-out
+  
+}
+
+.nav-items:hover{
+  background-color: #CBF4FF;
+}
+
+
+
+.nav-brand{
+  font-weight: bold;
+}
+
 .footer-container{
   padding : 1rem;
   background-color: #333;
@@ -128,7 +146,15 @@ button {
 }
 
 .applicants{
-  background-color:#E28413;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  /* border-style: solid;
+  border-color: #ea7d7d; */
+  box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
+  overflow: hidden;
+    margin: 20px;
+    padding: 20px; 
+    font-size: 18px;
 }
 
 .applicant-col{
@@ -159,6 +185,9 @@ button:disabled {
 .pdf-viewer{
   width: 100%;
   height : 86vh;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .newApp-form{
@@ -170,20 +199,96 @@ button:disabled {
   height : 2.5rem;
   border:none;
   border-radius: 8px;
+  background-color: #71c2ff;
+  border-style: solid;
+  border-color: #8ECEFF;
+  transition: background-color 0.3s ease-out
 }
 
-.filter-panel{
-  margin-top : 1rem;
+.filter-btn:hover{
+  background-color: #CBF4FF;
 }
 
 .filter-header-btn{
   margin-left:1rem;
-  height: 70%;
+  height: 2.5rem;
+  width: 20%;
+  border:none;
+  border-radius: 8px;
+  background-color: #71c2ff;
+  border-style: solid;
+  border-color: #8ECEFF;
+  transition: background-color 0.3s ease-out
+
 }
+
+.filter-header-btn:hover{
+  background-color: #CBF4FF;
+}
+
 
 .cv-btn{
   height: 5rem;
   width: 60%;
   border:none;
   border-radius: 8px;
+  background-color: #71c2ff;
+  border-style: solid;
+  border-color: #8ECEFF;
+  transition: background-color 0.3s ease-out
+}
+
+.cv-btn:hover{
+  background-color: #CBF4FF;
+}
+
+
+.filter-row{
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
+  overflow: hidden;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  margin-top: 1rem;
+
+}
+
+.search-cv{
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
+  overflow: hidden;
+  margin-bottom: 3rem;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.form-control-btn{
+  width: 80%;
+  height : 2.5rem;
+  border:none;
+  border-radius: 8px;
+  background-color: #71c2ff;
+  border-style: solid;
+  border-color: #8ECEFF;
+  transition: background-color 0.3s ease-out
+}
+
+.form-control-btn:hover{
+  background-color: #CBF4FF;
+}
+
+
+.form-control-btn-main{
+  width: 80%;
+  height : 2.5rem;
+  border:none;
+  border-radius: 8px;
+  background-color: #71c2ff;
+  border-style: solid;
+  border-color: #8ECEFF;
+  transition: background-color 0.3s ease-out
+}
+
+.form-control-btn-main:hover{
+  background-color: #CBF4FF;
 }

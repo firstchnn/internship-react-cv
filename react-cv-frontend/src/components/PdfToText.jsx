@@ -25,9 +25,9 @@ const PdfToText = () => {
             <h1 className="text-center ">PDF To Text</h1>
             <input className="form-control" type="file" id="inpFile" accept="application/pdf">
             </input>
-            <button className="form-control btn-primary mt-3" type="button" id="btnUpload" onClick={uploadPdf}>
-        Convert
-            </button>
+            <input className="form-control-btn mt-3 mb-3" type="button" id="btnUpload" value="Convert" onClick={uploadPdf}>
+        
+            </input>
             <br>
             </br>
             <textarea className="pdf-result" id="resultText" placeholder="Your text appear here..."></textarea>

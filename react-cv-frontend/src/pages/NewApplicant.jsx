@@ -273,13 +273,13 @@ export const NewApplicant = () => {
                 <Row>
                   <Col>
                     <input
-                      className="btn btn-primary"
+                      className="form-control-btn-main"
                       type="submit"
                       value="Add Applicant"
                     />
                   </Col>
                   <Col>
-                    <input className="btn btn-primary" type="reset" value="Reset information"></input>
+                    <input className="form-control-btn-main" type="reset" value="Reset information"></input>
                   </Col>
                 </Row>
               </Form>

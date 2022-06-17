@@ -57,7 +57,7 @@ const ImageToText = () => {
               <input
                 type="button"
                 onClick={handleSubmit}
-                className="form-control mt-5 btn-primary"
+                className="form-control-btn mt-3 mb-3"
                 value="Convert"
               />
             </>

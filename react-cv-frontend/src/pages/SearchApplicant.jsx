@@ -24,6 +24,7 @@ export const SearchApplicant = () => {
   const [skillFilter, setSkillFilter] = useState("");
   const [expFilter, setExpFilter] = useState("");
   const [currSort, setCurrSort] = useState("");
+  const [isMajor, setIsMajor] = useState(true);
   const sortOptions = [
     { value: "none", label: "None" },
     { value: "experience", label: "Experience" },
@@ -139,6 +140,7 @@ export const SearchApplicant = () => {
       }
     }
   };
+
   const renderList = async () => {
     await clearBox("applicants");
     const html = currData
@@ -173,13 +175,43 @@ export const SearchApplicant = () => {
       .insertAdjacentHTML("afterbegin", html);
   };
 
+  const skillFilterChange = (skill)  => {
+    setSkillFilter(skill);
+    if(skill.length > 0) {
+      setIsMajor(false);
+    }else{
+      setIsMajor(true);
+    }
+  }
+
   const resetFilter = () => {
-    document.getElementById("filter-form").reset();
+    setIsMajor(true);
   };
 
   const getGPA = () => {
     console.log(currData[28].gpa);
   };
+
+  const hasNumber = (mystring) => {
+    return /\d/.test(mystring);
+  }
+  const nameChangeHandle = (currName) => {
+    if(!hasNumber(currName)){
+      setNameFilter(currName);
+      setSelectedCV(currName);
+    }else{
+      alert("Cannot insert number into this field");
+    }
+  }
+
+  const cvnameChangeHandle = (currName) => {
+    if(!hasNumber(currName)){
+      setSelectedCV(currName);
+    }else{
+      alert("Cannot insert number into this field");
+    }
+    
+  }
 
   return (
     <motion.div
@@ -189,24 +221,28 @@ export const SearchApplicant = () => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
     >
       <Container>
-        <Row className="mb-4">
-          <Container className="d-flex justify-content-start align-items-center">
+        <Row>
+        <Container className="d-flex justify-content-start align-items-center">
             <h1>Search Applicant</h1>
-            <Button
+            <input
               className="filter-header-btn"
-              variant="primary"
+              type="button"
+              value="List Applicant"
               onClick={handleClick}
             >
-              List Applicant
-            </Button>
-            <Button
+              
+            </input>
+            <input
               className="filter-header-btn"
-              variant="primary"
+              type="button"
+              value="Clear List"
               onClick={clearList}
             >
-              Clear List
-            </Button>
+              
+            </input>
           </Container>
+        </Row>
+        <Row className="filter-row">
           <Container className="filter-panel">
             <Row>
               <Container className="d-flex justify-content-start">
@@ -221,7 +257,8 @@ export const SearchApplicant = () => {
                     <Form.Control
                       type="text"
                       id="nameFilter"
-                      onChange={(e) => setNameFilter(e.target.value)}
+                      value={nameFilter}
+                      onChange={(e) => nameChangeHandle(e.target.value)}
                     ></Form.Control>
                   </Col>
                   <Col>
@@ -229,7 +266,7 @@ export const SearchApplicant = () => {
                     <Form.Control
                       type="text"
                       id="skillFilter"
-                      onChange={(e) => setSkillFilter(e.target.value)}
+                      onChange={(e) => skillFilterChange(e.target.value)}
                     ></Form.Control>
                   </Col>
                   <Col>
@@ -243,6 +280,7 @@ export const SearchApplicant = () => {
                       max={100}
                       step={1}
                       onChange={(e) => setExpFilter(e.target.value)}
+                      disabled={isMajor}
                     ></Form.Control>
                   </Col>
                   <Col>
@@ -270,6 +308,7 @@ export const SearchApplicant = () => {
                       className="filter-btn"
                       type="reset"
                       value="Reset"
+                      onClick={resetFilter}
                     ></input>
                   </Col>
                 </Row>
@@ -278,24 +317,28 @@ export const SearchApplicant = () => {
           </Container>
         </Row>
         <Row className="home-main-row">
-          <Col className="applicant-col">
+          <Col sm={4}>
             <div className="AppList">
               <div id="applicants"></div>
             </div>
           </Col>
-          <Col>
-            <Row className="d-flex justify-content-start align-items-center mb-4">
-              <Col className="ml-4">
+          <Col sm={8}>
+            <Row className="search-cv d-flex justify-content-start align-items-center mb-4">
+              <Col sm={2}>
+              <Container></Container>
+              </Col>
+              <Col sm={5} className="ml-4">
               <Form>
                   <Form.Label htmlFor="applicant_cv">Applicant Name</Form.Label>
                   <Form.Control
                     type="text"
                     id="applicant_cv"
-                    onChange={(e) => setSelectedCV(e.target.value)}
+                    value={selectedCV}
+                    onChange={(e) => cvnameChangeHandle(e.target.value)}
                   ></Form.Control>
               </Form>
               </Col>
-              <Col>
+              <Col sm={4}>
               <input type="button" className="cv-btn" onClick={getbufferdata} value="Display CV"></input>
               </Col>
             </Row>
