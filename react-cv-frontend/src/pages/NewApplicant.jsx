@@ -76,6 +76,81 @@ export const NewApplicant = () => {
     
   }
 
+  const completeAlert = () => {
+    alert("Add new Applicant complete");
+  }
+
+  const [skillData, setSkillData] = useState([]);
+  const [majorCategory, setMajorCategory] = useState("");
+  const [minorCategory, setMinorCategory] = useState("");
+  
+  const getSkill = async() => {
+    try {
+      const response = await fetch(
+        "https://mongo-cv-api.herokuapp.com/all-skill",
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error! status : ${(response, status)}`);
+      }
+      const result = await response.json();
+      for (let i = 0; i < result.length; i++) {
+        skillData[i] = result[i];
+      }
+    } catch (err) {
+      setErr(err.message);
+    } finally {
+      await console.log(skillData);
+    }
+  }
+
+  const handleMajorChange = (e) => {
+    let skill = e.split(',');
+    console.log(skill);
+    let cat = [];
+    for(let i = 0; i < skill.length; i++) {
+      for(let j = 0; j < skillData.length; j++) {
+        if(skill[i].toLowerCase() === skillData[j].skill.toLowerCase()) {
+          cat[i] = skillData[j].category;
+          break;
+        }else{
+          cat[i] = "Not Found";
+        }
+      }
+    }
+    console.log(cat);
+    setMajorCategory(cat.join(', '))
+    
+  }
+
+  const handleMinorChange = (e) => {
+    let skill = e.split(',');
+    console.log(skill);
+    let cat = [];
+    for(let i = 0; i < skill.length; i++) {
+      for(let j = 0; j < skillData.length; j++) {
+        if(skill[i].toLowerCase() === skillData[j].skill.toLowerCase()) {
+          cat[i] = skillData[j].category;
+          break;
+        }else{
+          cat[i] = "Not Found";
+        }
+      }
+    }
+    console.log(cat);
+    setMinorCategory(cat.join(', '))
+  }
+
+  useEffect(() => {
+    getSkill();
+  },[])
+
+
   const [prescreenDate, setPrescreenDate] = useState(new Date());
   const [interviewDate, setInterviewDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
@@ -98,10 +173,11 @@ export const NewApplicant = () => {
                 method="POST"
                 encType="multipart/form-data"
                 className="newApp-form"
+                
               >
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="name">Name</Form.Label>
-                  <Form.Control type="text" id="name" name="name" value={currName} onChange={(e) => nameChangeHandle(e.target.value)} required/>
+                  <Form.Control type="text" id="name" name="name" value={currName} onChange={(e) => nameChangeHandle(e.target.value)} autoComplete="new-password" required/>
                 </Form.Group>
                 <Row className="mb-3">
                   <Col>
@@ -116,6 +192,7 @@ export const NewApplicant = () => {
                         min={0}
                         max={100}
                         step={1}
+                        autoComplete="new-password"
                         required
                       />
                     </Form.Group>
@@ -130,6 +207,7 @@ export const NewApplicant = () => {
                         min={0}
                         max={4}
                         step={0.01}
+                        autoComplete="new-password"
                         required
                       />
                     </Form.Group>
@@ -143,14 +221,33 @@ export const NewApplicant = () => {
                         type="text"
                         id="majorSkill"
                         name="majorSkill"
+                        onChange={(e) => handleMajorChange(e.target.value)}
+                        autoComplete="new-password"
                         required 
                       />
                     </Form.Group>
                   </Col>
+                  </Row>
+                  <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label htmlFor="majorCategory">Category</Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="majorCategory"
+                        name="majorCategory"
+                        value={majorCategory}
+                        disabled
+                        required 
+                      />
+                    </Form.Group>
+                  </Col>
+                  </Row>
+                  <Row>
                   <Col>
                     <Form.Group>
                       <Form.Label htmlFor="majorExp">
-                        Total relevant experience (yrs.)
+                        Total relevant experience
                       </Form.Label>
                       <Form.Control
                         type="number"
@@ -172,10 +269,28 @@ export const NewApplicant = () => {
                         type="text"
                         id="minorSkill"
                         name="minorSkill"
+                        onChange={(e) => handleMinorChange(e.target.value)}
                         required 
                       />
                     </Form.Group>
                   </Col>
+                  </Row>
+                  <Row>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label htmlFor="minorCategory">Category</Form.Label>
+                      <Form.Control
+                        type="text"
+                        id="minorCategory"
+                        name="minorCategory"
+                        value={minorCategory}
+                        disabled
+                        required 
+                      />
+                    </Form.Group>
+                  </Col>
+                  </Row>
+                  <Row>
                   <Col>
                     <Form.Group>
                       <Form.Label htmlFor="minorExp">

@@ -160,7 +160,13 @@ export const SearchApplicant = () => {
             <Card.Text className="mb-2">Major Skill: <b>${applicants.majorSkill} ${applicants.majorExp}</b> years</Card.Text>
             </div>
             <div>
+            <Card.Text className="mb-2">Category: <b>Web Development</b></Card.Text>
+            </div>
+            <div>
             <Card.Text className="mb-2">Minor Skill: <b>${applicants.minorSkill} ${applicants.minorExp}</b> years</Card.Text>
+            </div>
+            <div>
+            <Card.Text className="mb-2">Category: <b>Programming</b></Card.Text>
             </div>
             <div>
             <Card.Text>Status: ${applicants.status}</Card.Text>
@@ -184,8 +190,11 @@ export const SearchApplicant = () => {
     }
   }
 
-  const resetFilter = () => {
-    setIsMajor(true);
+  const resetFilter = async () => {
+    await setIsMajor(true);
+    await clearList();
+    setCurrData(data);
+    await renderList();
   };
 
   const getGPA = () => {
@@ -212,6 +221,10 @@ export const SearchApplicant = () => {
     }
     
   }
+
+  useEffect(() => {
+    handleClick();
+  },[])
 
   return (
     <motion.div
