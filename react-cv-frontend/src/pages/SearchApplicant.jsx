@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap";
 import { motion } from "framer-motion";
 import Select from "react-select";
+// import {ApplicantCard} from '../components/ApplicantCard';
 
 export const SearchApplicant = () => {
   const [data, setData] = useState({ data: [] });
@@ -43,9 +44,10 @@ export const SearchApplicant = () => {
       }
       if (found) {
         currData.length = 0;
-        for (let i = 0; i < temp.length; i++) {
-          currData.push(temp[i]);
-        }
+        // for (let i = 0; i < temp.length; i++) {
+        //   currData.push(temp[i]);
+        // }
+        setCurrData(temp);
       }
     }
     if (skillFilter != "") {
@@ -61,9 +63,10 @@ export const SearchApplicant = () => {
       }
       if (found) {
         currData.length = 0;
-        for (let i = 0; i < temp.length; i++) {
-          await currData.push(temp[i]);
-        }
+        // for (let i = 0; i < temp.length; i++) {
+        //   await currData.push(temp[i]);
+        // }
+        setCurrData(temp);
       }
     }
     if (expFilter != "") {
@@ -78,15 +81,16 @@ export const SearchApplicant = () => {
         }
         if (found) {
           currData.length = 0;
-          for (let i = 0; i < temp.length; i++) {
-            await currData.push(temp[i]);
-          }
+          // for (let i = 0; i < temp.length; i++) {
+          //   await currData.push(temp[i]);
+          // }
+          setCurrData(temp);
         }
       } else {
         alert("Please enter Major Skill");
       }
     }
-    await renderList();
+    // await renderList();
   };
 
   const handleChange = (sortOptions) => {
@@ -95,32 +99,35 @@ export const SearchApplicant = () => {
 
   const handleClick = async () => {
     setIsLoading(true);
-    try {
-      const response = await fetch(
-        "https://mongo-cv-api.herokuapp.com/all-cv",
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
+    if(currData.length <= 0){
+      try {
+        const response = await fetch(
+          "https://mongo-cv-api.herokuapp.com/all-cv",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Error! status : ${(response, status)}`);
         }
-      );
-      if (!response.ok) {
-        throw new Error(`Error! status : ${(response, status)}`);
+        const result = await response.json();
+        await setData(result);
+        for (let i = 0; i < result.length; i++) {
+          currData[i] = result[i];
+          bufferData[i] = result[i].file;
+          applicantName[i] = result[i].name;
+        }
+      } catch (err) {
+        setErr(err.message);
+      } finally {
+        await setIsLoading(false);
+        await console.log(currData);
+        
+        // await renderList();
       }
-      const result = await response.json();
-      await setData(result);
-      for (let i = 0; i < result.length; i++) {
-        currData[i] = result[i];
-        bufferData[i] = result[i].file;
-        applicantName[i] = result[i].name;
-      }
-    } catch (err) {
-      setErr(err.message);
-    } finally {
-      await setIsLoading(false);
-      await console.log(currData);
-      await renderList();
     }
   };
 
@@ -192,9 +199,9 @@ export const SearchApplicant = () => {
 
   const resetFilter = async () => {
     await setIsMajor(true);
-    await clearList();
-    setCurrData(data);
-    await renderList();
+    // await clearList();
+    await setCurrData(data);
+    // await renderList();
   };
 
   const getGPA = () => {
@@ -224,7 +231,7 @@ export const SearchApplicant = () => {
 
   useEffect(() => {
     handleClick();
-  },[])
+  },[currData])
 
   return (
     <motion.div
@@ -280,6 +287,7 @@ export const SearchApplicant = () => {
                       type="text"
                       id="skillFilter"
                       onChange={(e) => skillFilterChange(e.target.value)}
+                      disabled
                     ></Form.Control>
                   </Col>
                   <Col>
@@ -331,9 +339,56 @@ export const SearchApplicant = () => {
         </Row>
         <Row className="home-main-row">
           <Col sm={4}>
-            <div className="AppList">
-              <div id="applicants"></div>
+            <div>
+              {currData.map((data) => {
+                return (
+                  <div className="AppList" key={data._id}>
+                    <Card>
+                      <Card.Body>
+                        <Card.Title>
+                          Name : {data.name}
+                        </Card.Title>
+                        <div>
+                          <Card.Text>
+                          Total experience : {data.totalExp} years
+                          </Card.Text>
+                          <div>
+                            <Card.Text>
+                              GPA : {data.gpa.$numberDecimal}
+                            </Card.Text>
+                          </div>
+                          <div>
+                            <Card.Title>
+                              Technical Expertise
+                            </Card.Title>
+                              { data.os.length > 0 &&
+                              (<div>
+                                Operating System : <ul>{data.os.map((os) => <li>{os}</li>)}</ul>
+                              </div>)}
+                              {data.pl.length > 0 && (
+                                <div>
+                                Programming Language : <ul>{data.pl.map((pl) => <li>{pl}</li>)}</ul>
+                              </div>
+                              )}
+                              {data.db.length > 0 && (
+                                <div>
+                                Database : <ul>{data.db.map((db) => <li>{db}</li>)}</ul>
+                              </div>
+                              )}
+                              {data.tools.length > 0 && (
+                                <div>
+                                Tools and IDE : <ul>{data.tools.map((tool) => <li>{tool}</li>)}</ul>
+                              </div>
+                              )}
+                          </div>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                )
+              })}
             </div>
+
           </Col>
           <Col sm={8}>
             <Row className="search-cv d-flex justify-content-start align-items-center mb-4">
