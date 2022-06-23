@@ -7,9 +7,11 @@ const ImageToText = () => {
   const [image, setImage] = React.useState('');
   const [text, setText] = React.useState('');
   const [progress, setProgress] = React.useState(0);
+  const [isFiled, setIsFiled] = React.useState(false);
 
   const handleSubmit = () => {
-    setIsLoading(true);
+    if(image != ''){
+      setIsLoading(true);
     Tesseract.recognize(image, 'eng', {
       logger: (m) => {
         console.log(m);
@@ -26,13 +28,36 @@ const ImageToText = () => {
         setText(result.data.text);
         setIsLoading(false);
       });
+    }else{
+      alert("please insert file");
+    }
   };
 
   return (
     <div>
         <div className="justify-content-center">
-          {!isLoading && (
+          {true && (
             <h1 className="text-center ">Image To Text</h1>
+          )}
+          {true && true && (
+            <>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  setImage(URL.createObjectURL(e.target.files[0]))
+                }
+                className="form-control mt-5 mb-2"
+                disabled={isLoading}
+              />
+              <input
+                type="button"
+                onClick={handleSubmit}
+                className="form-control-btn mt-3 mb-3"
+                disabled={isLoading}
+                value="Convert"
+              />
+            </>
           )}
           {isLoading && (
             <>
@@ -42,24 +67,6 @@ const ImageToText = () => {
               </progress>{' '}
               <p className="text-center py-0 my-0">Converting:- {progress} %</p>
               </div>
-            </>
-          )}
-          {!isLoading && !text && (
-            <>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) =>
-                  setImage(URL.createObjectURL(e.target.files[0]))
-                }
-                className="form-control mt-5 mb-2"
-              />
-              <input
-                type="button"
-                onClick={handleSubmit}
-                className="form-control-btn mt-3 mb-3"
-                value="Convert"
-              />
             </>
           )}
           {!isLoading && text && (

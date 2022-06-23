@@ -92,7 +92,7 @@ button {
 
 .home-body-header{
   padding:1rem;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
 }
 
 .home-col {
@@ -143,18 +143,6 @@ button {
 .bw {
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
-}
-
-.applicants{
-  background-color: rgb(255, 255, 255);
-  border-radius: 10px;
-  /* border-style: solid;
-  border-color: #ea7d7d; */
-  box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
-  overflow: hidden;
-    margin: 20px;
-    padding: 20px; 
-    font-size: 18px;
 }
 
 .applicant-col{
@@ -262,6 +250,10 @@ button:disabled {
   margin-top: 1rem;
 }
 
+.form-control:disabled{
+  cursor: not-allowed;
+}
+
 .form-control-btn{
   width: 80%;
   height : 2.5rem;
@@ -270,7 +262,13 @@ button:disabled {
   background-color: #71c2ff;
   border-style: solid;
   border-color: #8ECEFF;
-  transition: background-color 0.3s ease-out
+  transition: background-color 0.3s ease-out;
+  
+
+}
+
+.form-control-btn:disabled{
+  cursor: not-allowed;
 }
 
 .form-control-btn:hover{
@@ -291,4 +289,24 @@ button:disabled {
 
 .form-control-btn-main:hover{
   background-color: #CBF4FF;
+}
+
+.AppList{
+  background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    /* border-style: solid;
+    border-color: #ea7d7d; */
+    box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
+    overflow: hidden;
+      margin: 20px;
+      padding: 20px; 
+      font-size: 18px;
+      width:90%;
+      justify-content: center;
+}
+
+#wrapper ul li
+{
+    margin:0;
+    padding:0;
 }

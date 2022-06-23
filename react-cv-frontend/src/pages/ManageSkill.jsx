@@ -8,6 +8,7 @@ import {
     Image,
     Button,
     Form,
+    FloatingLabel,
   } from "react-bootstrap";
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -49,7 +50,7 @@ export const ManageSkill = () => {
         exit={{opacity:0, transition : {duration : 0.3}}}>
             <Container>
                 <Row>
-                    <Col>
+                    <Col className="mt-3">
                         <h1>Manage Skill</h1>
                         <Form
                         action="https://mongo-cv-api.herokuapp.com/update-skill"
@@ -57,13 +58,17 @@ export const ManageSkill = () => {
                         encType="multipart/form-data"
                         className="manage-skill-form"
                         >
-                            <Form.Group>
-                                <Form.Label htmlFor="skill">Skill</Form.Label>
-                                <Form.Control type="text" id="skill" name="skill" value={skillName} onChange={(e) => setSkillName(e.target.value)}/>
+                            <Form.Group className="mt-3 mb-3">
+                                {/* <Form.Label htmlFor="skill">Skill</Form.Label> */}
+                                <FloatingLabel label="Skill Name (only one)">
+                                <Form.Control type="text" id="skill" name="skill" value={skillName} placeholder="don't mind me" onChange={(e) => setSkillName(e.target.value)}/>
+                            </FloatingLabel>
                             </Form.Group>
-                            <Form.Group>
-                                <Form.Label htmlFor="category">Category</Form.Label>
-                                <Form.Control type="text" id="category" name="category" value={categoryName} onChange={(e) => setCategoryName(e.target.value)}/>
+                            <Form.Group className="mt-3 mb-3">
+                                {/* <Form.Label htmlFor="category">Category</Form.Label> */}
+                                <FloatingLabel label="Category">
+                                <Form.Control type="text" id="category" name="category" value={categoryName} placeholder="don't mind me" onChange={(e) => setCategoryName(e.target.value)}/>
+                            </FloatingLabel>
                             </Form.Group>
                             <input
                       className="form-control-btn-main"
@@ -72,10 +77,10 @@ export const ManageSkill = () => {
                     />
                         </Form>
                     </Col>
-                    <Col>
-                    <h1>Display Skill</h1>
+                    <Col className="mt-3" id="wrapper">
+                    <h1>Current Skill</h1>
                     <ul>
-                        {skillSets.map(skillSets => <li key={skillSets._id}>{skillSets.skill}{" : "}{skillSets.category}</li>)}
+                        {skillSets.map(skillSets => <li className="justify-content-start" key={skillSets._id}>{skillSets.skill}{" : "}{skillSets.category}</li>)}
                     </ul>
                     </Col>
                 </Row>

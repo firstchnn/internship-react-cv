@@ -1,0 +1,21 @@
+.p-link:hover{
+    cursor: pointer;
+}
+
+.p-link{
+    margin-top:2rem;
+}
+
+.complete{
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    /* border-style: solid;
+    border-color: #ea7d7d; */
+    box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
+    overflow: hidden;
+      margin: 20px;
+      padding: 20px; 
+      font-size: 18px;
+      width: 75%;
+      justify-content: center;
+  }

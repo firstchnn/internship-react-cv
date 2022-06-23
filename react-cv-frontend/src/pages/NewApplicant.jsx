@@ -7,6 +7,7 @@ import {
   Image,
   Button,
   ThemeProvider,
+  FloatingLabel,
 } from "react-bootstrap";
 import { motion } from "framer-motion";
 import Select from "react-select";
@@ -146,6 +147,32 @@ export const NewApplicant = () => {
     setMinorCategory(cat.join(', '))
   }
 
+  const isUpper = (str) => {
+    return !/[a-z]/.test(str) && /[A-Z]/.test(str);
+}
+
+  // const handleSubmit = async (e) => {
+  //   console.log(currName);
+  //   e.preventDefault();
+  //   try {
+  //     let res = await fetch("https://mongo-cv-api.herokuapp.com/upload",{
+  //       method : "POST",
+  //       body : JSON.stringify({
+  //         name: currName,
+
+  //       }),
+  //     });
+  //     let resJson = await res.json();
+  //     if(res.status === 200){
+  //       setCurrName("");
+  //     }else{
+  //       alert("Error");
+  //     }
+  //   }catch(err){
+  //     alert(err);
+  //   }
+  // }
+
   useEffect(() => {
     getSkill();
   },[])
@@ -176,15 +203,15 @@ export const NewApplicant = () => {
                 
               >
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="name">Name</Form.Label>
-                  <Form.Control type="text" id="name" name="name" value={currName} onChange={(e) => nameChangeHandle(e.target.value)} autoComplete="new-password" required/>
+                  {/* <Form.Label htmlFor="name">Name</Form.Label> */}
+                  <FloatingLabel label="Name">
+                  <Form.Control placeholder="Name" type="text" id="name" name="name" value={currName} onChange={(e) => nameChangeHandle(e.target.value)} autoComplete="new-password" required/>
+                  </FloatingLabel>
                 </Form.Group>
                 <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="exp">
-                        Total Experience (yrs.)
-                      </Form.Label>
+                      <FloatingLabel label="Total Experience(yrs.)">
                       <Form.Control
                         type="number"
                         id="exp"
@@ -193,13 +220,16 @@ export const NewApplicant = () => {
                         max={100}
                         step={1}
                         autoComplete="new-password"
+                        placeholder ="year"
                         required
                       />
+                      </FloatingLabel>
+                      
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="gpa" required>GPA</Form.Label>
+                      <FloatingLabel label="GPA">
                       <Form.Control
                         type="number"
                         id="gpa"
@@ -208,47 +238,51 @@ export const NewApplicant = () => {
                         max={4}
                         step={0.01}
                         autoComplete="new-password"
+                        placeholder="GPA"
                         required
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="majorSkill">Major Skill</Form.Label>
+                      <FloatingLabel label="Major Skill">
                       <Form.Control
                         type="text"
                         id="majorSkill"
                         name="majorSkill"
                         onChange={(e) => handleMajorChange(e.target.value)}
                         autoComplete="new-password"
+                        placeholder="python"
                         required 
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                   </Row>
-                  <Row>
+                  <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="majorCategory">Category</Form.Label>
+                      <FloatingLabel label="Category">
                       <Form.Control
                         type="text"
                         id="majorCategory"
                         name="majorCategory"
                         value={majorCategory}
-                        disabled
+                        readOnly
+                        placeholder="python"
                         required 
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                   </Row>
-                  <Row>
+                  <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="majorExp">
-                        Total relevant experience
-                      </Form.Label>
+                      <FloatingLabel label="Total relevant experience(yrs.)">
                       <Form.Control
                         type="number"
                         id="majorExp"
@@ -256,46 +290,52 @@ export const NewApplicant = () => {
                         min={0}
                         max={100}
                         step={1}
+                        placeholder="3"
+                        autoComplete="new-password"
                         required 
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                 </Row>
                 <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="minorSkill">Minor Skill</Form.Label>
+                      <FloatingLabel label="Minor Skill">
                       <Form.Control
                         type="text"
                         id="minorSkill"
                         name="minorSkill"
                         onChange={(e) => handleMinorChange(e.target.value)}
+                        placeholder="Minor Skill"
+                        autoComplete="new-password"
                         required 
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                   </Row>
-                  <Row>
+                  <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="minorCategory">Category</Form.Label>
+                      <FloatingLabel label="Category">
                       <Form.Control
                         type="text"
                         id="minorCategory"
                         name="minorCategory"
                         value={minorCategory}
-                        disabled
+                        readOnly
+                        placeholder="python"
                         required 
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                   </Row>
-                  <Row>
+                  <Row className="mb-3">
                   <Col>
                     <Form.Group>
-                      <Form.Label htmlFor="minorExp">
-                        Total relevant experience (yrs.)
-                      </Form.Label>
+                      <FloatingLabel label="Total relevant experience(yrs.)">
                       <Form.Control
                         type="number"
                         id="minorExp"
@@ -303,8 +343,11 @@ export const NewApplicant = () => {
                         min={0}
                         max={100}
                         step={1}
+                        placeholder="2"
+                        autoComplete="new-password"
                         required 
                       />
+                      </FloatingLabel>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -391,6 +434,7 @@ export const NewApplicant = () => {
                       className="form-control-btn-main"
                       type="submit"
                       value="Add Applicant"
+                      // onClick={handleSubmit}
                     />
                   </Col>
                   <Col>

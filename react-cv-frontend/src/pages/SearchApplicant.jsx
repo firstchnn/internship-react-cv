@@ -56,11 +56,16 @@ export const SearchApplicant = () => {
       let found = false;
       let temp = [];
       for (let i = 0; i < currData.length; i++) {
-        if (skillFilter.toLowerCase() == currData[i].majorSkill.toLowerCase()) {
-          temp.push(currData[i]);
-          found = true;
+        let skillData = currData[i].majorSkill.split(',');
+        for(let j = 0 ; j < skillData.length; j++) {
+          if (skillFilter.toLowerCase() === skillData[j].toLowerCase()) {
+            temp.push(currData[i]);
+            found = true;
+            break;
+          }
         }
       }
+      
       if (found) {
         currData.length = 0;
         // for (let i = 0; i < temp.length; i++) {
@@ -131,9 +136,9 @@ export const SearchApplicant = () => {
     }
   };
 
-  const clearList = () => {
-    clearBox("applicants");
-  };
+  // const clearList = () => {
+  //   clearBox("applicants");
+  // };
   const clearBox = (elementID) => {
     document.getElementById(elementID).innerHTML = "";
   };
@@ -148,45 +153,45 @@ export const SearchApplicant = () => {
     }
   };
 
-  const renderList = async () => {
-    await clearBox("applicants");
-    const html = currData
-      .map((applicants) => {
-        return `
-            <div class="applicants mb-2">
-            <Card >
-            <Card.Body>
-            <Card.Title className="mb-2">${applicants.name}</Card.Title>
-            <div>
-            <Card.Text className="mb-2">Working years: ${applicants.totalExp}</Card.Text>
-            </div>
-            <div>
-            <Card.Text className="mb-2">GPA: ${applicants.gpa.$numberDecimal}</Card.Text>
-            </div>
-            <div>
-            <Card.Text className="mb-2">Major Skill: <b>${applicants.majorSkill} ${applicants.majorExp}</b> years</Card.Text>
-            </div>
-            <div>
-            <Card.Text className="mb-2">Category: <b>Web Development</b></Card.Text>
-            </div>
-            <div>
-            <Card.Text className="mb-2">Minor Skill: <b>${applicants.minorSkill} ${applicants.minorExp}</b> years</Card.Text>
-            </div>
-            <div>
-            <Card.Text className="mb-2">Category: <b>Programming</b></Card.Text>
-            </div>
-            <div>
-            <Card.Text>Status: ${applicants.status}</Card.Text>
-            </div>
-            </Card.Body>
-            </Card>
-                        </div>`;
-      })
-      .join("");
-    await document
-      .querySelector("#applicants")
-      .insertAdjacentHTML("afterbegin", html);
-  };
+  // const renderList = async () => {
+  //   await clearBox("applicants");
+  //   const html = currData
+  //     .map((applicants) => {
+  //       return `
+  //           <div class="applicants mb-2">
+  //           <Card >
+  //           <Card.Body>
+  //           <Card.Title className="mb-2">${applicants.name}</Card.Title>
+  //           <div>
+  //           <Card.Text className="mb-2">Working years: ${applicants.totalExp}</Card.Text>
+  //           </div>
+  //           <div>
+  //           <Card.Text className="mb-2">GPA: ${applicants.gpa.$numberDecimal}</Card.Text>
+  //           </div>
+  //           <div>
+  //           <Card.Text className="mb-2">Major Skill: <b>${applicants.majorSkill} ${applicants.majorExp}</b> years</Card.Text>
+  //           </div>
+  //           <div>
+  //           <Card.Text className="mb-2">Category: <b>Web Development</b></Card.Text>
+  //           </div>
+  //           <div>
+  //           <Card.Text className="mb-2">Minor Skill: <b>${applicants.minorSkill} ${applicants.minorExp}</b> years</Card.Text>
+  //           </div>
+  //           <div>
+  //           <Card.Text className="mb-2">Category: <b>Programming</b></Card.Text>
+  //           </div>
+  //           <div>
+  //           <Card.Text>Status: ${applicants.status}</Card.Text>
+  //           </div>
+  //           </Card.Body>
+  //           </Card>
+  //                       </div>`;
+  //     })
+  //     .join("");
+  //   await document
+  //     .querySelector("#applicants")
+  //     .insertAdjacentHTML("afterbegin", html);
+  // };
 
   const skillFilterChange = (skill)  => {
     setSkillFilter(skill);
@@ -204,12 +209,14 @@ export const SearchApplicant = () => {
     // await renderList();
   };
 
-  const getGPA = () => {
-    console.log(currData[28].gpa);
-  };
 
   const hasNumber = (mystring) => {
     return /\d/.test(mystring);
+  }
+  const hasText = (mystring) => {
+    let res = /^\d+$/.test(mystring)
+    console.log(mystring + res);
+    return /^\d+$/.test(mystring);
   }
   const nameChangeHandle = (currName) => {
     if(!hasNumber(currName)){
@@ -244,22 +251,6 @@ export const SearchApplicant = () => {
         <Row>
         <Container className="d-flex justify-content-start align-items-center">
             <h1>Search Applicant</h1>
-            <input
-              className="filter-header-btn"
-              type="button"
-              value="List Applicant"
-              onClick={handleClick}
-            >
-              
-            </input>
-            <input
-              className="filter-header-btn"
-              type="button"
-              value="Clear List"
-              onClick={clearList}
-            >
-              
-            </input>
           </Container>
         </Row>
         <Row className="filter-row">
@@ -287,7 +278,7 @@ export const SearchApplicant = () => {
                       type="text"
                       id="skillFilter"
                       onChange={(e) => skillFilterChange(e.target.value)}
-                      disabled
+                      // disabled
                     ></Form.Control>
                   </Col>
                   <Col>
@@ -300,7 +291,8 @@ export const SearchApplicant = () => {
                       min={0}
                       max={100}
                       step={1}
-                      onChange={(e) => setExpFilter(e.target.value)}
+                      onChange={(e) => expHandleChange(e.target.value)}
+                      // onKeyDown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"
                       disabled={isMajor}
                     ></Form.Control>
                   </Col>
@@ -342,8 +334,8 @@ export const SearchApplicant = () => {
             <div>
               {currData.map((data) => {
                 return (
-                  <div className="AppList" key={data._id}>
-                    <Card>
+                  <div className="mt-3 mb-3" key={data._id}>
+                    <Card className="AppList">
                       <Card.Body>
                         <Card.Title>
                           Name : {data.name}
@@ -380,6 +372,18 @@ export const SearchApplicant = () => {
                                 Tools and IDE : <ul>{data.tools.map((tool) => <li>{tool}</li>)}</ul>
                               </div>
                               )}
+                              <Card.Text>
+                                Pre-screen Date : {data.prescreenDate}
+                              </Card.Text>
+                              <Card.Text>
+                                Interview Date : {data.interviewDate}
+                              </Card.Text>
+                              <Card.Text>
+                                Availability : {data.startDate}
+                              </Card.Text>
+                              <Card.Text>
+                                Status : {data.status}
+                              </Card.Text>
                           </div>
                         </div>
                       </Card.Body>
