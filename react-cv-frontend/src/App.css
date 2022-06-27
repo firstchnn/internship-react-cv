@@ -1,5 +1,5 @@
-.App {
-  text-align: center;
+.App{
+  overflow: visible;
 }
 
 .App-logo {
@@ -42,6 +42,7 @@ button {
 }
 
 .navbar-app{
+  text-align: center;
   height:7vh;
 }
 
@@ -57,10 +58,12 @@ button {
   background-color: #CBF4FF;
 }
 
-
-
 .nav-brand{
   font-weight: bold;
+}
+
+.searchApp-container{
+  overflow: visible;
 }
 
 .footer-container{
@@ -75,6 +78,7 @@ button {
 
 .home-body{
   display: flex;
+  text-align: center;
   justify-content: center;
   align-items: center;
   height:86vh;
@@ -82,9 +86,6 @@ button {
 }
 
 .searchApp-body{
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   height:86vh;
   margin-bottom : 7vh;
 
@@ -102,47 +103,6 @@ button {
 }
 .home-col:hover{
   transform : scale(1.5);
-}
-
-.styleCard {
-  border-radius: 8px;
-  box-shadow: 0px 0px 8px #ccc;
-  color: #253b56;
-  margin: 12px 0px;
-}
-
-.styleCardContent {
-  padding: 4px 16px 20px 16px;
-}
-
-.styleImage {
-  background-color: lightGray;
-  border-radius: 8px 8px 0 0;
-  max-height: 140px;
-  overflow: hidden;
-}
-
-.styleCardTitle {
-  /* font-family: Avenir-Heavy; */
-  font-family: "Lato", sans-serif;
-  font-weight: 600;
-  margin: 12px 0px 0px 0px;
-}
-
-.styleLocationLabel {
-  color: #8294aa;
-  font-size: 14;
-  margin: 4px 0;
-}
-
-.styleDescription {
-  font-size: 14;
-  margin: 8px 0 0 0;
-}
-
-.bw {
-  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-  filter: grayscale(100%);
 }
 
 .applicant-col{
@@ -174,12 +134,27 @@ button:disabled {
   width: 100%;
   height : 86vh;
   border-radius: 10px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+}
+
+.newApp-body{
+  text-align: center;
 }
 
 .newApp-form{
   display: block;
+}
+
+.filter-form{
+  text-align: center;
+}
+
+.filter-row{
+  overflow: visible;
+}
+
+.filter-panel{
+  overflow: visible;
 }
 
 .filter-btn{
@@ -233,8 +208,7 @@ button:disabled {
 
 .filter-row{
   border-radius: 10px;
-  box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 1rem;
   padding: 1rem;
   margin-top: 1rem;
@@ -243,8 +217,7 @@ button:disabled {
 
 .search-cv{
   border-radius: 10px;
-  box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
-  overflow: hidden;
+  overflow: visible;
   margin-bottom: 3rem;
   padding: 1rem;
   margin-top: 1rem;
@@ -292,17 +265,7 @@ button:disabled {
 }
 
 .AppList{
-  background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    /* border-style: solid;
-    border-color: #ea7d7d; */
-    box-shadow: 0 2px 20px rgba(34, 8, 50, 0.3);
-    overflow: hidden;
-      margin: 20px;
-      padding: 20px; 
-      font-size: 18px;
-      width:90%;
-      justify-content: center;
+  float : left;
 }
 
 #wrapper ul li
@@ -310,3 +273,4 @@ button:disabled {
     margin:0;
     padding:0;
 }
+

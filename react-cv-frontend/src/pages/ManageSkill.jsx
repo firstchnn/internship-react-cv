@@ -61,13 +61,13 @@ export const ManageSkill = () => {
                             <Form.Group className="mt-3 mb-3">
                                 {/* <Form.Label htmlFor="skill">Skill</Form.Label> */}
                                 <FloatingLabel label="Skill Name (only one)">
-                                <Form.Control type="text" id="skill" name="skill" value={skillName} placeholder="don't mind me" onChange={(e) => setSkillName(e.target.value)}/>
+                                <Form.Control type="text" id="skill" name="skill" value={skillName} placeholder="don't mind me" onChange={(e) => setSkillName(e.target.value)} required/>
                             </FloatingLabel>
                             </Form.Group>
                             <Form.Group className="mt-3 mb-3">
                                 {/* <Form.Label htmlFor="category">Category</Form.Label> */}
                                 <FloatingLabel label="Category">
-                                <Form.Control type="text" id="category" name="category" value={categoryName} placeholder="don't mind me" onChange={(e) => setCategoryName(e.target.value)}/>
+                                <Form.Control type="text" id="category" name="category" value={categoryName} placeholder="don't mind me" onChange={(e) => setCategoryName(e.target.value)} required/>
                             </FloatingLabel>
                             </Form.Group>
                             <input
@@ -77,7 +77,7 @@ export const ManageSkill = () => {
                     />
                         </Form>
                     </Col>
-                    <Col className="mt-3" id="wrapper">
+                    <Col className="mt-3">
                     <h1>Current Skill</h1>
                     <ul>
                         {skillSets.map(skillSets => <li className="justify-content-start" key={skillSets._id}>{skillSets.skill}{" : "}{skillSets.category}</li>)}

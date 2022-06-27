@@ -84,6 +84,8 @@ export const NewApplicant = () => {
   const [skillData, setSkillData] = useState([]);
   const [majorCategory, setMajorCategory] = useState("");
   const [minorCategory, setMinorCategory] = useState("");
+  const [totalExps, setTotalExp] = useState("");
+  const [relExps, setRelExp] = useState("");
   
   const getSkill = async() => {
     try {
@@ -151,6 +153,28 @@ export const NewApplicant = () => {
     return !/[a-z]/.test(str) && /[A-Z]/.test(str);
 }
 
+const handletotalExpChange = async(e) => {
+  // if(relExps > e){
+  //   alert("Incorrect number : The number of total experience is less than the number of total relevant experience");
+  // }else{
+  //   setTotalExp(e);
+  // }
+  await setTotalExp(e);
+  // await console.log(e + " : " + relExps)
+}
+
+const handleRelExpChange = async(e) => {
+  // if(parseInt(relExp) > parseInt(totalExp)){
+  //   alert("Incorrect number : The number of total experience is less than the number of total relevant experience");
+  // }else{
+  //   setRelExp(e);
+  // }
+  // await setRelExp(e);
+  // await console.log(totalExps + " : " + relExps)
+  setRelExp(e);
+  // console.log(relExps)
+}
+
   // const handleSubmit = async (e) => {
   //   console.log(currName);
   //   e.preventDefault();
@@ -189,7 +213,7 @@ export const NewApplicant = () => {
       exit={{ opacity: 0, transition: { duration: 0.3 } }}
     >
       <Container>
-        <Row className="align-self">
+        <Row>
           <Col>
             <Row className="mb-2">
               <h1>New Applicant</h1>
@@ -205,7 +229,7 @@ export const NewApplicant = () => {
                 <Form.Group className="mb-3">
                   {/* <Form.Label htmlFor="name">Name</Form.Label> */}
                   <FloatingLabel label="Name">
-                  <Form.Control placeholder="Name" type="text" id="name" name="name" value={currName} onChange={(e) => nameChangeHandle(e.target.value)} autoComplete="new-password" required/>
+                  <Form.Control placeholder="Name" type="text" id="name" name="name"  onChange={(e) => nameChangeHandle(e.target.value)} autoComplete="new-password" required/>
                   </FloatingLabel>
                 </Form.Group>
                 <Row className="mb-3">
@@ -216,9 +240,11 @@ export const NewApplicant = () => {
                         type="number"
                         id="exp"
                         name="exp"
-                        min={0}
+                        min={relExps}
                         max={100}
                         step={1}
+                        // value={totalExps}
+                        onChange={(e) => handletotalExpChange(e.target.value,relExps)}
                         autoComplete="new-password"
                         placeholder ="year"
                         required
@@ -288,9 +314,11 @@ export const NewApplicant = () => {
                         id="majorExp"
                         name="majorExp"
                         min={0}
-                        max={100}
+                        max={totalExps}
                         step={1}
                         placeholder="3"
+                        value={relExps}
+                        onChange={(e) => handleRelExpChange(e.target.value)}
                         autoComplete="new-password"
                         required 
                       />
