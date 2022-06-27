@@ -18,7 +18,7 @@ export const AddComplete = () => {
   const doneIcon = "https://img.icons8.com/cotton/344/checkmark.png";
   return (
     <motion.div
-      className="searchApp-body mt-3"
+      className="addComplete-body mt-3"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.3 } }}

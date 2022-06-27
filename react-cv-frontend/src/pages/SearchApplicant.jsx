@@ -25,6 +25,16 @@ export const SearchApplicant = () => {
   const warnNotify = () => {
     toast.warn('Please Enter a Filter', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
   }
+  const warnNumberNotify = () => {
+    toast.warn('Cannot insert number into this field', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
+  }
+  const warnTextNotify = () => {
+    toast.warn('Cannot insert text into this field', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
+  }
+  const warnSkillNotify = () => {
+    toast.warn('Please enter Major Skill', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
+  
+  }
   const [data, setData] = useState({ data: [] });
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -114,7 +124,7 @@ const [selectedOption, setSelectedOption] = useState("");
             setCurrData(temp);
           }
         } else {
-          alert("Please enter Major Skill");
+          warnSkillNotify();
         }
       }
       if(sortFilter != "" && sortFilter != "none" ){
@@ -240,7 +250,7 @@ const handleChange = (value) => {
       
             // applyFilter();
     }else{
-      alert("Cannot insert number into this field");
+      warnNumberNotify();
     }
   }
 
@@ -248,7 +258,7 @@ const handleChange = (value) => {
     if(!hasNumber(currName)){
       setSelectedCV(currName);
     }else{
-      alert("Cannot insert number into this field");
+      warnNumberNotify();
     }
     
   }
@@ -257,7 +267,7 @@ const handleChange = (value) => {
     if(hasText(exp)){
       setExpFilter(exp);
     }else{
-      alert("Cannot insert text into this field");
+      warnTextNotify();
     }
   }
 

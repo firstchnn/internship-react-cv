@@ -16,7 +16,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import ImageToText from "../components/ImageToText";
 import PdfToText from "../components/PdfToText";
 import Form from "react-bootstrap/Form";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const NewApplicant = () => {
+  const warnNumberNotify = () => {
+    toast.warn("Cannot insert number into this field", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+  };
+  const resetNotify = () => {
+    toast.success('Reset Information', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
+  }
   const getLanguage = () => {
     var e = document.getElementById("langSkill");
     var lang = e.value;
@@ -54,6 +65,22 @@ export const NewApplicant = () => {
     { value: "Selected", label: "Selected" },
   ];
 
+  const [langValue, setLangValue] = useState(null);
+  const [proficientValue, setProficientValue] = useState(null);
+  const [statusValue, setStatusValue] = useState(null);
+
+  const langSelectChange = (langValue) => {
+    setLangValue(langValue);
+  };
+
+  const profSelectChange = (proficientValue) => {
+    setProficientValue(proficientValue);
+  };
+
+  const statSelectChange = (statusValue) => {
+    setStatusValue(statusValue);
+  };
+
   const resetForm = () => {
     document.getElementById("newApp-form").reset();
   };
@@ -67,27 +94,22 @@ export const NewApplicant = () => {
   const [currName, setCurrName] = useState("");
   const hasNumber = (mystring) => {
     return /\d/.test(mystring);
-  }
+  };
   const nameChangeHandle = (currName) => {
-    if(!hasNumber(currName)){
+    if (!hasNumber(currName)) {
       setCurrName(currName);
-    }else{
-      alert("Cannot insert number into this field");
+    } else {
+      warnNumberNotify();
     }
-    
-  }
-
-  const completeAlert = () => {
-    alert("Add new Applicant complete");
-  }
+  };
 
   const [skillData, setSkillData] = useState([]);
   const [majorCategory, setMajorCategory] = useState("");
   const [minorCategory, setMinorCategory] = useState("");
   const [totalExps, setTotalExp] = useState("");
   const [relExps, setRelExp] = useState("");
-  
-  const getSkill = async() => {
+
+  const getSkill = async () => {
     try {
       const response = await fetch(
         "https://mongo-cv-api.herokuapp.com/all-skill",
@@ -110,97 +132,75 @@ export const NewApplicant = () => {
     } finally {
       await console.log(skillData);
     }
-  }
+  };
 
   const handleMajorChange = (e) => {
-    let skill = e.split(',');
+    let skill = e.split(",");
     console.log(skill);
     let cat = [];
-    for(let i = 0; i < skill.length; i++) {
-      for(let j = 0; j < skillData.length; j++) {
-        if(skill[i].toLowerCase() === skillData[j].skill.toLowerCase()) {
+    for (let i = 0; i < skill.length; i++) {
+      for (let j = 0; j < skillData.length; j++) {
+        if (skill[i].toLowerCase() === skillData[j].skill.toLowerCase()) {
           cat[i] = skillData[j].category;
           break;
-        }else{
+        } else {
           cat[i] = "Not Found";
         }
       }
     }
     console.log(cat);
-    setMajorCategory(cat.join(', '))
-    
-  }
+    setMajorCategory(cat.join(", "));
+  };
 
   const handleMinorChange = (e) => {
-    let skill = e.split(',');
+    let skill = e.split(",");
     console.log(skill);
     let cat = [];
-    for(let i = 0; i < skill.length; i++) {
-      for(let j = 0; j < skillData.length; j++) {
-        if(skill[i].toLowerCase() === skillData[j].skill.toLowerCase()) {
+    for (let i = 0; i < skill.length; i++) {
+      for (let j = 0; j < skillData.length; j++) {
+        if (skill[i].toLowerCase() === skillData[j].skill.toLowerCase()) {
           cat[i] = skillData[j].category;
           break;
-        }else{
+        } else {
           cat[i] = "Not Found";
         }
       }
     }
     console.log(cat);
-    setMinorCategory(cat.join(', '))
-  }
+    setMinorCategory(cat.join(", "));
+  };
 
   const isUpper = (str) => {
     return !/[a-z]/.test(str) && /[A-Z]/.test(str);
-}
+  };
 
-const handletotalExpChange = async(e) => {
-  // if(relExps > e){
-  //   alert("Incorrect number : The number of total experience is less than the number of total relevant experience");
-  // }else{
-  //   setTotalExp(e);
-  // }
-  await setTotalExp(e);
-  // await console.log(e + " : " + relExps)
-}
+  const handletotalExpChange = async (e) => {
+    // if(relExps > e){
+    //   alert("Incorrect number : The number of total experience is less than the number of total relevant experience");
+    // }else{
+    //   setTotalExp(e);
+    // }
+    await setTotalExp(e);
+    // await console.log(e + " : " + relExps)
+  };
 
-const handleRelExpChange = async(e) => {
-  // if(parseInt(relExp) > parseInt(totalExp)){
-  //   alert("Incorrect number : The number of total experience is less than the number of total relevant experience");
-  // }else{
-  //   setRelExp(e);
-  // }
-  // await setRelExp(e);
-  // await console.log(totalExps + " : " + relExps)
-  setRelExp(e);
-  // console.log(relExps)
-}
+  const handleRelExpChange = async (e) => {
+    setRelExp(e);
+  };
 
-  // const handleSubmit = async (e) => {
-  //   console.log(currName);
-  //   e.preventDefault();
-  //   try {
-  //     let res = await fetch("https://mongo-cv-api.herokuapp.com/upload",{
-  //       method : "POST",
-  //       body : JSON.stringify({
-  //         name: currName,
-
-  //       }),
-  //     });
-  //     let resJson = await res.json();
-  //     if(res.status === 200){
-  //       setCurrName("");
-  //     }else{
-  //       alert("Error");
-  //     }
-  //   }catch(err){
-  //     alert(err);
-  //   }
-  // }
+  const resetInformation = () => {
+    setCurrName("");
+    setRelExp("");
+    setStatusValue(null);
+    setProficientValue(null);
+    setLangValue(null);
+    resetNotify();
+    
+  };
 
   useEffect(() => {
     getSkill();
-  },[])
-
+  }, []);
 
   const [prescreenDate, setPrescreenDate] = useState(new Date());
   const [interviewDate, setInterviewDate] = useState(new Date());
@@ -224,49 +224,58 @@ const handleRelExpChange = async(e) => {
                 method="POST"
                 encType="multipart/form-data"
                 className="newApp-form"
-                
               >
                 <Form.Group className="mb-3">
                   {/* <Form.Label htmlFor="name">Name</Form.Label> */}
                   <FloatingLabel label="Name">
-                  <Form.Control placeholder="Name" type="text" id="name" name="name"  onChange={(e) => nameChangeHandle(e.target.value)} autoComplete="new-password" required/>
+                    <Form.Control
+                      placeholder="Name"
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={currName}
+                      onChange={(e) => nameChangeHandle(e.target.value)}
+                      autoComplete="new-password"
+                      required
+                    />
                   </FloatingLabel>
                 </Form.Group>
                 <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Total Experience(yrs.)">
-                      <Form.Control
-                        type="number"
-                        id="exp"
-                        name="exp"
-                        min={relExps}
-                        max={100}
-                        step={1}
-                        // value={totalExps}
-                        onChange={(e) => handletotalExpChange(e.target.value,relExps)}
-                        autoComplete="new-password"
-                        placeholder ="year"
-                        required
-                      />
+                        <Form.Control
+                          type="number"
+                          id="exp"
+                          name="exp"
+                          min={relExps}
+                          max={100}
+                          step={1}
+                          // value={totalExps}
+                          onChange={(e) =>
+                            handletotalExpChange(e.target.value, relExps)
+                          }
+                          autoComplete="new-password"
+                          placeholder="year"
+                          required
+                        />
                       </FloatingLabel>
-                      
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="GPA">
-                      <Form.Control
-                        type="number"
-                        id="gpa"
-                        name="gpa"
-                        min={0}
-                        max={4}
-                        step={0.01}
-                        autoComplete="new-password"
-                        placeholder="GPA"
-                        required
-                      />
+                        <Form.Control
+                          type="number"
+                          id="gpa"
+                          name="gpa"
+                          min={0}
+                          max={4}
+                          step={0.01}
+                          autoComplete="new-password"
+                          placeholder="GPA"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
@@ -275,53 +284,53 @@ const handleRelExpChange = async(e) => {
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Major Skill">
-                      <Form.Control
-                        type="text"
-                        id="majorSkill"
-                        name="majorSkill"
-                        onChange={(e) => handleMajorChange(e.target.value)}
-                        autoComplete="new-password"
-                        placeholder="python"
-                        required 
-                      />
+                        <Form.Control
+                          type="text"
+                          id="majorSkill"
+                          name="majorSkill"
+                          onChange={(e) => handleMajorChange(e.target.value)}
+                          autoComplete="new-password"
+                          placeholder="python"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
-                  </Row>
-                  <Row className="mb-3">
+                </Row>
+                <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Category">
-                      <Form.Control
-                        type="text"
-                        id="majorCategory"
-                        name="majorCategory"
-                        value={majorCategory}
-                        readOnly
-                        placeholder="python"
-                        required 
-                      />
+                        <Form.Control
+                          type="text"
+                          id="majorCategory"
+                          name="majorCategory"
+                          value={majorCategory}
+                          readOnly
+                          placeholder="python"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
-                  </Row>
-                  <Row className="mb-3">
+                </Row>
+                <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Total relevant experience(yrs.)">
-                      <Form.Control
-                        type="number"
-                        id="majorExp"
-                        name="majorExp"
-                        min={0}
-                        max={totalExps}
-                        step={1}
-                        placeholder="3"
-                        value={relExps}
-                        onChange={(e) => handleRelExpChange(e.target.value)}
-                        autoComplete="new-password"
-                        required 
-                      />
+                        <Form.Control
+                          type="number"
+                          id="majorExp"
+                          name="majorExp"
+                          min={0}
+                          max={totalExps}
+                          step={1}
+                          placeholder="3"
+                          value={relExps}
+                          onChange={(e) => handleRelExpChange(e.target.value)}
+                          autoComplete="new-password"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
@@ -330,51 +339,51 @@ const handleRelExpChange = async(e) => {
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Minor Skill">
-                      <Form.Control
-                        type="text"
-                        id="minorSkill"
-                        name="minorSkill"
-                        onChange={(e) => handleMinorChange(e.target.value)}
-                        placeholder="Minor Skill"
-                        autoComplete="new-password"
-                        required 
-                      />
+                        <Form.Control
+                          type="text"
+                          id="minorSkill"
+                          name="minorSkill"
+                          onChange={(e) => handleMinorChange(e.target.value)}
+                          placeholder="Minor Skill"
+                          autoComplete="new-password"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
-                  </Row>
-                  <Row className="mb-3">
+                </Row>
+                <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Category">
-                      <Form.Control
-                        type="text"
-                        id="minorCategory"
-                        name="minorCategory"
-                        value={minorCategory}
-                        readOnly
-                        placeholder="python"
-                        required 
-                      />
+                        <Form.Control
+                          type="text"
+                          id="minorCategory"
+                          name="minorCategory"
+                          value={minorCategory}
+                          readOnly
+                          placeholder="python"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
-                  </Row>
-                  <Row className="mb-3">
+                </Row>
+                <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Total relevant experience(yrs.)">
-                      <Form.Control
-                        type="number"
-                        id="minorExp"
-                        name="minorExp"
-                        min={0}
-                        max={100}
-                        step={1}
-                        placeholder="2"
-                        autoComplete="new-password"
-                        required 
-                      />
+                        <Form.Control
+                          type="number"
+                          id="minorExp"
+                          name="minorExp"
+                          min={0}
+                          max={100}
+                          step={1}
+                          placeholder="2"
+                          autoComplete="new-password"
+                          required
+                        />
                       </FloatingLabel>
                     </Form.Group>
                   </Col>
@@ -386,7 +395,9 @@ const handleRelExpChange = async(e) => {
                       options={langOptions}
                       name="langSkill"
                       id="langSkill"
-                      required 
+                      value={langValue}
+                      onChange={langSelectChange}
+                      required
                     />
                   </Col>
                   <Col>
@@ -395,7 +406,9 @@ const handleRelExpChange = async(e) => {
                       options={proficientOptions}
                       name="proficiency"
                       id="proficiency"
-                      required 
+                      value={proficientValue}
+                      onChange={profSelectChange}
+                      required
                     />
                   </Col>
                 </Row>
@@ -424,7 +437,7 @@ const handleRelExpChange = async(e) => {
                       name="interviewDate"
                       minDate={prescreenDate}
                       maxDate={interviewDate}
-                      required 
+                      required
                     />
                   </Col>
                   <Col>
@@ -441,7 +454,14 @@ const handleRelExpChange = async(e) => {
                 <Row className="mb-4">
                   <Col>
                     <Form.Label htmlFor="status">Status</Form.Label>
-                    <Select options={statusOptions} name="status" id="status" required/>
+                    <Select
+                      options={statusOptions}
+                      name="status"
+                      id="status"
+                      value={statusValue}
+                      onChange={statSelectChange}
+                      required
+                    />
                   </Col>
                   <Col>
                     <Form.Label htmlFor="file">Upload CV</Form.Label>
@@ -466,7 +486,12 @@ const handleRelExpChange = async(e) => {
                     />
                   </Col>
                   <Col>
-                    <input className="form-control-btn-main" type="reset" value="Reset information"></input>
+                    <input
+                      className="form-control-btn-main"
+                      type="reset"
+                      value="Reset information"
+                      onClick={resetInformation}
+                    ></input>
                   </Col>
                 </Row>
               </Form>
@@ -481,6 +506,7 @@ const handleRelExpChange = async(e) => {
             </Row>
           </Col>
         </Row>
+        <ToastContainer />
       </Container>
     </motion.div>
   );
