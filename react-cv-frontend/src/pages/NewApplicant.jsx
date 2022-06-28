@@ -26,8 +26,11 @@ export const NewApplicant = () => {
     });
   };
   const resetNotify = () => {
-    toast.success('Reset Information', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
-  }
+    toast.success("Reset Information", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+  };
   const getLanguage = () => {
     var e = document.getElementById("langSkill");
     var lang = e.value;
@@ -51,11 +54,10 @@ export const NewApplicant = () => {
   ];
 
   const proficientOptions = [
-    { value: "Native", label: "Native" },
-    { value: "Fluent", label: "Fluent" },
-    { value: "Proficient", label: "Proficient" },
-    { value: "Intermediate", label: "Intermediate" },
-    { value: "Beginner", label: "Beginner" },
+    { value: "Fluent/Native", label: "Fluent/Native" },
+    { value: "Good", label: "Good" },
+    { value: "Fair", label: "Fair" },
+    { value: "Basic", label: "Basic" },
   ];
 
   const statusOptions = [
@@ -65,9 +67,26 @@ export const NewApplicant = () => {
     { value: "Selected", label: "Selected" },
   ];
 
+  const genderOptions = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+    { value: "Others", label: "Others" },
+    { value: "Prefer not to say", label: "Prefer not to say" },
+  ];
+
+  const maritalOptions = [
+    { value: "Married", label: "Married" },
+    { value: "Single", label: "Single" },
+    { value: "Divorced", label: "Divorced" },
+    { value: "Widowed", label: "Widowed" },
+    { value: "Separated", label: "Separated" },
+  ];
+
   const [langValue, setLangValue] = useState(null);
   const [proficientValue, setProficientValue] = useState(null);
   const [statusValue, setStatusValue] = useState(null);
+  const [genderValue, setGenderValue] = useState(null);
+  const [maritalValue, setMaritalValue] = useState(null);
 
   const langSelectChange = (langValue) => {
     setLangValue(langValue);
@@ -81,23 +100,67 @@ export const NewApplicant = () => {
     setStatusValue(statusValue);
   };
 
-  const resetForm = () => {
-    document.getElementById("newApp-form").reset();
+  const genderSelectChange = (genderValue) => {
+    setGenderValue(genderValue);
   };
 
-  const getSelect = () => {
-    const e = document.getElementById("langSkill");
-    const lang = e.value;
-    console.log(lang);
+  const maritalSelectChange = (maritalValue) => {
+    setMaritalValue(maritalValue);
   };
 
   const [currName, setCurrName] = useState("");
+  const [currThaiName, setCurrThaiName] = useState("");
+  const [position, setPosition] = useState("");
+  const [expPosition, setExpPosition] = useState("");
+  const [expProject, setExpProject] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [certificate, setCertificate] = useState("");
   const hasNumber = (mystring) => {
     return /\d/.test(mystring);
   };
   const nameChangeHandle = (currName) => {
     if (!hasNumber(currName)) {
       setCurrName(currName);
+    } else {
+      warnNumberNotify();
+    }
+  };
+
+  const thaiChangeHandle = (currName) => {
+    if (!hasNumber(currName)) {
+      setCurrThaiName(currName);
+    } else {
+      warnNumberNotify();
+    }
+  };
+
+  const positionChangeHandle = (currName) => {
+    if (!hasNumber(currName)) {
+      setPosition(currName);
+    } else {
+      warnNumberNotify();
+    }
+  };
+
+  const expPositionChangeHandle = (currName) => {
+    if (!hasNumber(currName)) {
+      setExpPosition(currName);
+    } else {
+      warnNumberNotify();
+    }
+  };
+
+  const expProjectChangeHandle = (currName) => {
+    setExpProject(currName);
+  };
+
+  const certificateChangeHandle = (currName) => {
+    setCertificate(currName);
+  };
+
+  const industryChangeHandle = (currName) => {
+    if (!hasNumber(currName)) {
+      setIndustry(currName);
     } else {
       warnNumberNotify();
     }
@@ -133,8 +196,18 @@ export const NewApplicant = () => {
       await console.log(skillData);
     }
   };
-
+  const [majorSkill, setMajorSkill] = useState("");
+  const [minorSkill, setMinorSkill] = useState("");
+  var os = [];
+  var pl = [];
+  var db = [];
+  var tools = [];
+  const [currOS, setCurrOS] = useState("");
+  const [currPL, setCurrPL] = useState("");
+  const [currDB, setCurrDB] = useState("");
+  const [currIDE, setCurrIDE] = useState("");
   const handleMajorChange = (e) => {
+    setMajorSkill(e);
     let skill = e.split(",");
     console.log(skill);
     let cat = [];
@@ -148,11 +221,31 @@ export const NewApplicant = () => {
         }
       }
     }
+    os.length = 0;
+    pl.length = 0;
+    db.length = 0;
+    tools.length = 0;
+    for (let i = 0; i < skill.length; i++) {
+      if (cat[i] === "Operating System") {
+        os.push(skill[i]);
+      } else if (cat[i] === "Programming Language") {
+        pl.push(skill[i]);
+      } else if (cat[i] === "Database") {
+        db.push(skill[i]);
+      } else if (cat[i] === "Tools and IDE") {
+        tools.push(skill[i]);
+      }
+    }
+    setCurrOS(os.join(", "));
+    setCurrPL(pl.join(", "));
+    setCurrDB(db.join(", "));
+    setCurrIDE(tools.join(", "));
     console.log(cat);
     setMajorCategory(cat.join(", "));
   };
 
   const handleMinorChange = (e) => {
+    setMinorSkill(e);
     let skill = e.split(",");
     console.log(skill);
     let cat = [];
@@ -169,9 +262,12 @@ export const NewApplicant = () => {
     console.log(cat);
     setMinorCategory(cat.join(", "));
   };
-
-  const isUpper = (str) => {
-    return !/[a-z]/.test(str) && /[A-Z]/.test(str);
+  const [softSkill, setSoftSkill] = useState("");
+  const [splitSoft, setSplitSoft] = useState([]);
+  const handleSoftChange = (e) => {
+    setSoftSkill(e);
+    let skill = e.split(",");
+    setSplitSoft(skill);
   };
 
   const handletotalExpChange = async (e) => {
@@ -195,7 +291,6 @@ export const NewApplicant = () => {
     setProficientValue(null);
     setLangValue(null);
     resetNotify();
-    
   };
 
   useEffect(() => {
@@ -205,6 +300,17 @@ export const NewApplicant = () => {
   const [prescreenDate, setPrescreenDate] = useState(new Date());
   const [interviewDate, setInterviewDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
+  const [birthDate, setBirthDate] = useState(new Date());
+  const [age, setAge] = useState(null);
+  const handleDOB = (date) => {
+    setBirthDate(date);
+    let year = date.toString();
+    let subyear = year.substring(11, 16);
+    let numyear = parseInt(subyear);
+    // console.log(numyear-1);
+    setAge(2022 - numyear);
+  };
+
   return (
     <motion.div
       className="newApp-body mt-3"
@@ -218,6 +324,7 @@ export const NewApplicant = () => {
             <Row className="mb-2">
               <h1>New Applicant</h1>
             </Row>
+
             <Row className="d-flex justify-content-start">
               <Form
                 action="https://mongo-cv-api.herokuapp.com/upload"
@@ -226,7 +333,20 @@ export const NewApplicant = () => {
                 className="newApp-form"
               >
                 <Form.Group className="mb-3">
-                  {/* <Form.Label htmlFor="name">Name</Form.Label> */}
+                  <FloatingLabel label="Position">
+                    <Form.Control
+                      placeholder="Position"
+                      type="text"
+                      id="position"
+                      name="position"
+                      value={position}
+                      onChange={(e) => positionChangeHandle(e.target.value)}
+                      autoComplete="new-password"
+                      required
+                    />
+                  </FloatingLabel>
+                </Form.Group>
+                <Form.Group className="mb-3">
                   <FloatingLabel label="Name">
                     <Form.Control
                       placeholder="Name"
@@ -240,6 +360,55 @@ export const NewApplicant = () => {
                     />
                   </FloatingLabel>
                 </Form.Group>
+                <Form.Group className="mb-3">
+                  <FloatingLabel label="Thai Name">
+                    <Form.Control
+                      placeholder="ThaiName"
+                      type="text"
+                      id="thaiName"
+                      name="thaiName"
+                      value={currThaiName}
+                      onChange={(e) => thaiChangeHandle(e.target.value)}
+                      autoComplete="new-password"
+                      required
+                    />
+                  </FloatingLabel>
+                </Form.Group>
+                <Row className="mb-3">
+                  <Col>
+                    <Form.Label htmlFor="gender">Gender</Form.Label>
+                    <Select
+                      options={genderOptions}
+                      name="gender"
+                      id="gender"
+                      value={genderValue}
+                      onChange={genderSelectChange}
+                      required
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Label htmlFor="marital">Marital Status</Form.Label>
+                    <Select
+                      options={maritalOptions}
+                      name="marital"
+                      id="marital"
+                      value={maritalValue}
+                      onChange={maritalSelectChange}
+                      required
+                    />
+                  </Col>
+                  <Col>
+                    <Form.Label htmlFor="birthDate">Date of Birth</Form.Label>
+                    <DatePicker
+                      selected={birthDate}
+                      onChange={(date) => handleDOB(date)}
+                      id="birthDate"
+                      name="birthDate"
+                      maxDate={new Date()}
+                      required
+                    />
+                  </Col>
+                </Row>
                 <Row className="mb-3">
                   <Col>
                     <Form.Group>
@@ -251,10 +420,8 @@ export const NewApplicant = () => {
                           min={relExps}
                           max={100}
                           step={1}
-                          // value={totalExps}
-                          onChange={(e) =>
-                            handletotalExpChange(e.target.value, relExps)
-                          }
+                          value={totalExps}
+                          onChange={(e) => handletotalExpChange(e.target.value)}
                           autoComplete="new-password"
                           placeholder="year"
                           required
@@ -281,6 +448,68 @@ export const NewApplicant = () => {
                   </Col>
                 </Row>
                 <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <FloatingLabel label="Experience Position">
+                      <Form.Control
+                        placeholder="Experience Position"
+                        type="text"
+                        id="expPosition"
+                        name="expPosition"
+                        value={expPosition}
+                        onChange={(e) =>
+                          expPositionChangeHandle(e.target.value)
+                        }
+                        autoComplete="new-password"
+                        required
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <FloatingLabel label="Experience Project">
+                      <Form.Control
+                        placeholder="Experience Project"
+                        type="text"
+                        id="expProject"
+                        name="expProject"
+                        value={expProject}
+                        onChange={(e) => expProjectChangeHandle(e.target.value)}
+                        autoComplete="new-password"
+                        required
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <FloatingLabel label="Business Industries">
+                      <Form.Control
+                        placeholder="Business Industries"
+                        type="text"
+                        id="industry"
+                        name="industry"
+                        value={industry}
+                        onChange={(e) => industryChangeHandle(e.target.value)}
+                        autoComplete="new-password"
+                        required
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <FloatingLabel label="Certificates or Training">
+                      <Form.Control
+                        placeholder="Certificates or Training"
+                        type="text"
+                        id="certificate"
+                        name="certificate"
+                        value={certificate}
+                        onChange={(e) =>
+                          certificateChangeHandle(e.target.value)
+                        }
+                        autoComplete="new-password"
+                        required
+                      />
+                    </FloatingLabel>
+                  </Form.Group>
+                </Row>
+                <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Major Skill">
@@ -288,6 +517,7 @@ export const NewApplicant = () => {
                           type="text"
                           id="majorSkill"
                           name="majorSkill"
+                          value={majorSkill}
                           onChange={(e) => handleMajorChange(e.target.value)}
                           autoComplete="new-password"
                           placeholder="python"
@@ -381,6 +611,24 @@ export const NewApplicant = () => {
                           max={100}
                           step={1}
                           placeholder="2"
+                          autoComplete="new-password"
+                          required
+                        />
+                      </FloatingLabel>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row className="mb-3">
+                  <Col>
+                    <Form.Group>
+                      <FloatingLabel label="Soft Skill">
+                        <Form.Control
+                          type="text"
+                          id="softSkill"
+                          name="softSkill"
+                          value={softSkill}
+                          onChange={(e) => handleSoftChange(e.target.value)}
+                          placeholder="softskill"
                           autoComplete="new-password"
                           required
                         />
@@ -498,11 +746,149 @@ export const NewApplicant = () => {
             </Row>
           </Col>
           <Col>
-            <Row className="row-extract-img">
+            {/* <Row className="row-extract-img">
               <ImageToText />
             </Row>
             <Row className="row-extract-pdf">
               <PdfToText />
+            </Row> */}
+            <Row>
+              <h1>Preview</h1>
+            </Row>
+            <Row>
+              <Container style={{ border: "solid" }}>
+                <Row style={{ textAlign: "right" }}>
+                  <h5>Position : {position}</h5>
+                </Row>
+                <Row style={{ textAlign: "left" }}>
+                  <Col>
+                    <Row>
+                      <h5>Personal Detail</h5>
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
+                        <h5>Name</h5>
+                        <h5>Thai Name</h5>
+                        <h5>Gender</h5>
+                        <h5>Marital Status</h5>
+                        <h5>Age</h5>
+                      </Col>
+                      <Col sm={6}>
+                        <h5> : {currName}</h5>
+                        <h5> : {currThaiName}</h5>
+                        <h5>
+                          {" "}
+                          : {genderValue != null && <>{genderValue.value}</>}
+                        </h5>
+                        <h5>
+                          {" "}
+                          : {maritalValue != null && <>{maritalValue.value}</>}
+                        </h5>
+                        <h5> : {age != null && <>{age}</>}</h5>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row style={{ textAlign: "left" }}>
+                  <h5>Qualification Summary</h5>
+                  <ul>
+                    <li style={{ marginLeft: "1.5rem" }}>
+                      Overall experience under IT and SDLC for{" "}
+                      {<b>{totalExps}</b>} years with the expertise and
+                      background experience as {<b>{position}</b>}
+                    </li>
+                    <li style={{ marginLeft: "1.5rem" }}>
+                      Solid background and ability to {<b>{expPosition}</b>}{" "}
+                      with expertise on {<b>{majorSkill}</b>} and{" "}
+                      {<b>{minorSkill}</b>}
+                    </li>
+                    <li style={{ marginLeft: "1.5rem" }}>
+                      Proven projects record on {<b>{expProject}</b>} for{" "}
+                      {<b>{industry}</b>} Business
+                    </li>
+                    <li style={{ marginLeft: "1.5rem" }}>
+                      Certified with {<b>{certificate}</b>}
+                    </li>
+                    {splitSoft.map((skill) => (
+                      <li style={{ marginLeft: "1.5rem" }}>{skill}</li>
+                    ))}
+                    <li style={{ marginLeft: "1.5rem" }}>
+                      {proficientValue != null && (
+                        <>{<b>{proficientValue.value}</b>}</>
+                      )}{" "}
+                      at {langValue != null && <>{<b>{langValue.value}</b>}</>}
+                    </li>
+                  </ul>
+                </Row>
+                <Row style={{ textAlign: "left" }}>
+                  <h5>Technical Expertise</h5>
+                  
+                </Row>
+                <Row>
+                {currOS != "" && (
+                    <Row>
+                      <Col>
+                        <ul>
+                          <li style={{ marginLeft: "1.5rem" }}>
+                            Operating System
+                          </li>
+                        </ul>
+                      </Col>
+                      <Col style={{ wordBreak: "break-all" }}>
+                        <div>
+                          <p> : {currOS}</p>
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
+                  {currPL != "" && (
+                    <Row>
+                      <Col>
+                        <ul>
+                          <li style={{ marginLeft: "1.5rem" }}>
+                            Programming Language
+                          </li>
+                        </ul>
+                      </Col>
+                      <Col style={{ wordBreak: "break-all" }}>
+                        <div>
+                          <p> : {currPL}</p>
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
+                  {currDB != "" && (
+                    <Row>
+                      <Col>
+                        <ul>
+                          <li style={{ marginLeft: "1.5rem" }}>Database</li>
+                        </ul>
+                      </Col>
+                      <Col style={{ wordBreak: "break-all" }}>
+                        <div>
+                          <p> : {currDB}</p>
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
+                  {currIDE != "" && (
+                    <Row>
+                      <Col>
+                        <ul>
+                          <li style={{ marginLeft: "1.5rem" }}>
+                            Tools and IDE
+                          </li>
+                        </ul>
+                      </Col>
+                      <Col style={{ wordBreak: "break-all" }}>
+                        <div>
+                          <p> : {currIDE}</p>
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
+                </Row>
+              </Container>
             </Row>
           </Col>
         </Row>

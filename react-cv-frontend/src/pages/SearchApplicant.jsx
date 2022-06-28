@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import Select from "react-select";
 import {toast,ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import { BackToTopBtn } from "../components/BackToTopBtn";
 // import {ApplicantCard} from '../components/ApplicantCard';
 // toast.configure();
 export const SearchApplicant = () => {
@@ -346,7 +347,7 @@ const handleChange = (value) => {
                       value={value}
                       options={sortOptions}
                       onChange={handleChange}
-                      isDisabled={(nameFilter > 0)}
+                      // isDisabled={(nameFilter > 0)}
                     />
                   </Col>
                 </Row>
@@ -506,6 +507,7 @@ const handleChange = (value) => {
             </Row>
           </Col>
         </Row>
+        <BackToTopBtn/>
         <ToastContainer />
       </Container>
     </motion.div>

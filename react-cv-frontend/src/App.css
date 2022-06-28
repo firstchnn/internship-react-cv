@@ -1,5 +1,6 @@
 .App{
   overflow: visible;
+  /* background-color: #fcde67; */
 }
 
 .App-logo {
@@ -44,6 +45,10 @@ button {
 .navbar-app{
   text-align: center;
   height:7vh;
+  /* background-color: #fcde67; */
+  position: top;
+  top: 0;
+  
 }
 
 .nav-items{
@@ -138,7 +143,7 @@ button:disabled {
 }
 
 .newApp-body{
-  text-align: center;
+  text-align: left;
 }
 
 .newApp-form{

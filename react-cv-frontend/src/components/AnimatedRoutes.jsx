@@ -5,7 +5,7 @@ import { SearchApplicant } from "../pages/SearchApplicant";
 import { ManageSkill } from "../pages/ManageSkill";
 import { AddComplete } from "../pages/AddComplete";
 import { useLocation, Routes, Route } from "react-router-dom";
-
+import { AddSkillComplete } from "../pages/AddSkillComplete";
 import { AnimatePresence } from "framer-motion";
 
 export const AnimatedRoutes = () => {
@@ -18,6 +18,7 @@ export const AnimatedRoutes = () => {
         <Route path="/searchApp" element={<SearchApplicant />}></Route>
         <Route path="/manageSkill" element={<ManageSkill />}></Route>
         <Route path="/complete" element={<AddComplete />}></Route>
+        <Route path="/skillComplete" element={<AddSkillComplete />}></Route>
       </Routes>
     </AnimatePresence>
   );

@@ -6,11 +6,11 @@ export const NavBar = () => {
   const iconPic = "https://img.icons8.com/cotton/344/coffee-to-go.png";
   return (
     <Navbar
-      className="navbar-app"
-      bg="light"
-      variant="light"
-      sticky="top"
-      expand="md"
+      className="navbar-app shadow"
+      // bg="light"
+      // variant="light"
+      // sticky="top"
+      // expand="md"
     >
       <Container className="align-items-center">
         <Navbar.Brand as={Link} to="/" href="#home">
