@@ -269,6 +269,29 @@ button:disabled {
   background-color: #CBF4FF;
 }
 
+.form-control-btn-upload{
+  /* text-align: center;
+  justify-content: center; */
+  width: 100%;
+  height : 3.5rem;
+  border:none;
+  border-radius: 8px;
+  background-color: #71c2ff;
+  border-style: solid;
+  border-color: #8ECEFF;
+  transition: background-color 0.3s ease-out;
+  
+
+}
+
+.form-control-btn-upload:disabled{
+  cursor: not-allowed;
+}
+
+.form-control-btn-upload:hover{
+  background-color: #CBF4FF;
+}
+
 .AppList{
   float : left;
 }

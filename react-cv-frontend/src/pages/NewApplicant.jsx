@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   Card,
@@ -8,6 +8,7 @@ import {
   Button,
   ThemeProvider,
   FloatingLabel,
+  Accordion,
 } from "react-bootstrap";
 import { motion } from "framer-motion";
 import Select from "react-select";
@@ -18,9 +19,28 @@ import PdfToText from "../components/PdfToText";
 import Form from "react-bootstrap/Form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import JsPDF from "jspdf";
+import { BackToTopBtn } from "../components/BackToTopBtn";
+import logo from "../icon/Logo_superhr.png";
 export const NewApplicant = () => {
+  const ref = useRef(null);
+  const [divHeight, setDivHeight] = useState(448);
+
+  const generatePDF = () => {
+    const report = new JsPDF("p", "px", [660, 700]);
+    report.html(document.querySelector("#report")).then(() => {
+      report.save(currName.split(" ")[0] + "-" + position + "-report.pdf");
+      // console.log(report.output('datauri'));
+    });
+  };
   const warnNumberNotify = () => {
-    toast.warn("Cannot insert number into this field", {
+    toast.warn("Cannot insert Number into this field", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+  };
+  const warnTextNotify = () => {
+    toast.warn("Cannot insert Text into this field", {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
@@ -30,11 +50,6 @@ export const NewApplicant = () => {
       position: toast.POSITION.BOTTOM_RIGHT,
       autoClose: 1500,
     });
-  };
-  const getLanguage = () => {
-    var e = document.getElementById("langSkill");
-    var lang = e.value;
-    console.log(lang);
   };
 
   const langOptions = [
@@ -209,7 +224,7 @@ export const NewApplicant = () => {
   const handleMajorChange = (e) => {
     setMajorSkill(e);
     let skill = e.split(",");
-    console.log(skill);
+    // console.log(skill);
     let cat = [];
     for (let i = 0; i < skill.length; i++) {
       for (let j = 0; j < skillData.length; j++) {
@@ -240,8 +255,11 @@ export const NewApplicant = () => {
     setCurrPL(pl.join(", "));
     setCurrDB(db.join(", "));
     setCurrIDE(tools.join(", "));
-    console.log(cat);
+    // console.log(cat);
     setMajorCategory(cat.join(", "));
+    setDivHeight(ref.current.clientHeight);
+    console.log("height: ", ref.current.clientHeight);
+    console.log("width: ", ref.current.clientWidth);
   };
 
   const handleMinorChange = (e) => {
@@ -271,13 +289,7 @@ export const NewApplicant = () => {
   };
 
   const handletotalExpChange = async (e) => {
-    // if(relExps > e){
-    //   alert("Incorrect number : The number of total experience is less than the number of total relevant experience");
-    // }else{
-    //   setTotalExp(e);
-    // }
     await setTotalExp(e);
-    // await console.log(e + " : " + relExps)
   };
 
   const handleRelExpChange = async (e) => {
@@ -295,6 +307,9 @@ export const NewApplicant = () => {
 
   useEffect(() => {
     getSkill();
+    // setDivHeight(ref.current.clientHeight);
+    // console.log("height: ", ref.current.clientHeight);
+    // console.log("width: ", ref.current.clientWidth);
   }, []);
 
   const [prescreenDate, setPrescreenDate] = useState(new Date());
@@ -307,9 +322,22 @@ export const NewApplicant = () => {
     let year = date.toString();
     let subyear = year.substring(11, 16);
     let numyear = parseInt(subyear);
-    // console.log(numyear-1);
     setAge(2022 - numyear);
   };
+
+  const [email, setEmail] = useState("");
+  const [tel, setTel] = useState("");
+  
+  const handleTelChange = (tel) => {
+    let isnum = /^\d+$/.test(tel);
+    if (isnum) {
+      setTel(tel);
+    } else {
+      warnTextNotify();
+    }
+  }
+  
+  
 
   return (
     <motion.div
@@ -332,21 +360,34 @@ export const NewApplicant = () => {
                 encType="multipart/form-data"
                 className="newApp-form"
               >
-                <Form.Group className="mb-3">
-                  <FloatingLabel label="Position">
-                    <Form.Control
-                      placeholder="Position"
-                      type="text"
-                      id="position"
-                      name="position"
-                      value={position}
-                      onChange={(e) => positionChangeHandle(e.target.value)}
-                      autoComplete="new-password"
-                      required
-                    />
-                  </FloatingLabel>
-                </Form.Group>
-                <Form.Group className="mb-3">
+                <Accordion defaultActiveKey={['0']} alwaysOpen>
+                  {/* POSITION */}
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header><b>Applied for</b></Accordion.Header>
+                    <Accordion.Body>
+                      <Form.Group>
+                        <FloatingLabel label="Position">
+                          <Form.Control
+                            placeholder="Position"
+                            type="text"
+                            id="position"
+                            name="position"
+                            value={position}
+                            onChange={(e) =>
+                              positionChangeHandle(e.target.value)
+                            }
+                            autoComplete="new-password"
+                            required
+                          />
+                        </FloatingLabel>
+                      </Form.Group>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {/* Personal Details */}
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header><b>Personal Details</b></Accordion.Header>
+                    <Accordion.Body>
+                    <Form.Group className="mb-3">
                   <FloatingLabel label="Name">
                     <Form.Control
                       placeholder="Name"
@@ -409,7 +450,47 @@ export const NewApplicant = () => {
                     />
                   </Col>
                 </Row>
-                <Row className="mb-3">
+                <Row >
+                  <Col>
+                    <Form.Group>
+                      <FloatingLabel label="Email">
+                        <Form.Control
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          autoComplete="new-password"
+                          placeholder="email"
+                          required
+                        />
+                      </FloatingLabel>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                  <Form.Group>
+                      <FloatingLabel label="Tel.">
+                        <Form.Control
+                          type="text"
+                          id="tel"
+                          name="tel"
+                          value={tel}
+                          onChange={(e) => handleTelChange(e.target.value)}
+                          autoComplete="new-password"
+                          placeholder="year"
+                          required
+                        />
+                      </FloatingLabel>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {/* Work Experience */}
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header><b>Work Experiences</b></Accordion.Header>
+                    <Accordion.Body>
+                    <Row className="mb-3">
                   <Col>
                     <Form.Group>
                       <FloatingLabel label="Total Experience(yrs.)">
@@ -447,7 +528,7 @@ export const NewApplicant = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Row className="mb-3">
+                <Row >
                   <Form.Group className="mb-3">
                     <FloatingLabel label="Experience Position">
                       <Form.Control
@@ -492,7 +573,7 @@ export const NewApplicant = () => {
                       />
                     </FloatingLabel>
                   </Form.Group>
-                  <Form.Group className="mb-3">
+                  <Form.Group>
                     <FloatingLabel label="Certificates or Training">
                       <Form.Control
                         placeholder="Certificates or Training"
@@ -509,9 +590,15 @@ export const NewApplicant = () => {
                     </FloatingLabel>
                   </Form.Group>
                 </Row>
-                <Row className="mb-3">
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {/* Skill */}
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header><b>Skills</b></Accordion.Header>
+                    <Accordion.Body>
+                    <Row >
                   <Col>
-                    <Form.Group>
+                    <Form.Group className="mb-3">
                       <FloatingLabel label="Major Skill">
                         <Form.Control
                           type="text"
@@ -636,7 +723,7 @@ export const NewApplicant = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Row className="mb-3">
+                <Row >
                   <Col>
                     <Form.Label htmlFor="langSkill">Language Skill</Form.Label>
                     <Select
@@ -660,8 +747,14 @@ export const NewApplicant = () => {
                     />
                   </Col>
                 </Row>
-                <Row className="mb-3">
-                  <Col>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {/* Applicant Status */}
+                  <Accordion.Item eventKey="4">
+                    <Accordion.Header><b>Applicant Status</b></Accordion.Header>
+                    <Accordion.Body>
+                      <Row>
+                      <Col>
                     <Form.Label htmlFor="prescreenDate">
                       Pre-screen Date
                     </Form.Label>
@@ -688,19 +781,9 @@ export const NewApplicant = () => {
                       required
                     />
                   </Col>
-                  <Col>
-                    <Form.Label htmlFor="startDate">Availability</Form.Label>
-                    <DatePicker
-                      selected={startDate}
-                      onChange={(date) => setStartDate(date)}
-                      id="startDate"
-                      name="startDate"
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row className="mb-4">
-                  <Col>
+                      </Row>
+                    <Row>
+                    <Col>
                     <Form.Label htmlFor="status">Status</Form.Label>
                     <Select
                       options={statusOptions}
@@ -712,7 +795,26 @@ export const NewApplicant = () => {
                     />
                   </Col>
                   <Col>
-                    <Form.Label htmlFor="file">Upload CV</Form.Label>
+                    <Form.Label htmlFor="startDate">Availability</Form.Label>
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      id="startDate"
+                      name="startDate"
+                      required
+                    />
+                  </Col>
+                </Row>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {/* Files */}
+                  <Accordion.Item eventKey="5">
+                    <Accordion.Header><b>Files</b></Accordion.Header>
+                    <Accordion.Body>
+                    <Row className="mb-3">
+                  
+                  <Col>
+                    <Form.Label htmlFor="file">Original CV</Form.Label>
                     <input
                       className="form-control"
                       name="uploadedFile"
@@ -724,7 +826,26 @@ export const NewApplicant = () => {
                     ></input>
                   </Col>
                 </Row>
-                <Row>
+                    <Row >
+                  <Col>
+                    <Form.Label htmlFor="file">Generated CV</Form.Label>
+                    <input
+                      className="form-control"
+                      name="uploadedGenCV"
+                      id="file"
+                      type="file"
+                      encType="multipart/form-data"
+                      accept="application/pdf"
+                      required
+                    ></input>
+                  </Col>
+                </Row>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+
+                {/* submit and reset button */}
+                <Row className="mb-4 mt-3" style={{textAlign: 'center'}}>
                   <Col>
                     <input
                       className="form-control-btn-main"
@@ -756,57 +877,77 @@ export const NewApplicant = () => {
               <h1>Preview</h1>
             </Row>
             <Row>
-              <Container style={{ border: "solid" }}>
-                <Row style={{ textAlign: "right" }}>
-                  <h5>Position : {position}</h5>
+              <Container
+                className="shadow"
+                ref={ref}
+                id="report"
+                style={{ borderRadius: "8px" }}
+              >
+                <Row className="p-3 mb-2" style={{borderBottom: "1px solid gray"}}>
+                  <Col>
+                    <Container style={{ padding: "0" }}>
+                      <Image className="home-col-icon" src={logo} height={40} />
+                    </Container>
+                  </Col>
+                  <Col style={{ textAlign: "right" ,fontStyle: "italic" }}>
+                    <p><b>Position</b> : {position}</p>
+                  </Col>
                 </Row>
                 <Row style={{ textAlign: "left" }}>
                   <Col>
                     <Row>
-                      <h5>Personal Detail</h5>
+                      <h4><b>Personal Details</b></h4>
                     </Row>
                     <Row>
                       <Col sm={3}>
-                        <h5>Name</h5>
-                        <h5>Thai Name</h5>
-                        <h5>Gender</h5>
-                        <h5>Marital Status</h5>
-                        <h5>Age</h5>
+                        <p><b>Name</b></p>
+                        <p><b>Thai Name</b></p>
+                        <p><b>Gender</b></p>
+                        <p><b>Marital Status</b></p>
+                        <p><b>Age</b></p>
                       </Col>
                       <Col sm={6}>
-                        <h5> : {currName}</h5>
-                        <h5> : {currThaiName}</h5>
-                        <h5>
+                        <p> : {currName}</p>
+                        <p> : {currThaiName}</p>
+                        <p>
                           {" "}
                           : {genderValue != null && <>{genderValue.value}</>}
-                        </h5>
-                        <h5>
+                        </p>
+                        <p>
                           {" "}
                           : {maritalValue != null && <>{maritalValue.value}</>}
-                        </h5>
-                        <h5> : {age != null && <>{age}</>}</h5>
+                        </p>
+                        <p> : {age != null && <>{age}</>}</p>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
                 <Row style={{ textAlign: "left" }}>
-                  <h5>Qualification Summary</h5>
+                  <h4><b>Qualification Summary</b></h4>
                   <ul>
-                    <li style={{ marginLeft: "1.5rem" }}>
+                    <li
+                      style={{ marginLeft: "1.5rem", wordBreak: "break-all" }}
+                    >
                       Overall experience under IT and SDLC for{" "}
                       {<b>{totalExps}</b>} years with the expertise and
                       background experience as {<b>{position}</b>}
                     </li>
-                    <li style={{ marginLeft: "1.5rem" }}>
+                    <li
+                      style={{ marginLeft: "1.5rem", wordBreak: "break-all" }}
+                    >
                       Solid background and ability to {<b>{expPosition}</b>}{" "}
                       with expertise on {<b>{majorSkill}</b>} and{" "}
                       {<b>{minorSkill}</b>}
                     </li>
-                    <li style={{ marginLeft: "1.5rem" }}>
+                    <li
+                      style={{ marginLeft: "1.5rem", wordBreak: "break-all" }}
+                    >
                       Proven projects record on {<b>{expProject}</b>} for{" "}
                       {<b>{industry}</b>} Business
                     </li>
-                    <li style={{ marginLeft: "1.5rem" }}>
+                    <li
+                      style={{ marginLeft: "1.5rem", wordBreak: "break-all" }}
+                    >
                       Certified with {<b>{certificate}</b>}
                     </li>
                     {splitSoft.map((skill) => (
@@ -821,11 +962,10 @@ export const NewApplicant = () => {
                   </ul>
                 </Row>
                 <Row style={{ textAlign: "left" }}>
-                  <h5>Technical Expertise</h5>
-                  
+                  <h4><b>Technical Expertise</b></h4>
                 </Row>
                 <Row>
-                {currOS != "" && (
+                  {currOS != "" && (
                     <Row>
                       <Col>
                         <ul>
@@ -890,8 +1030,18 @@ export const NewApplicant = () => {
                 </Row>
               </Container>
             </Row>
+            <Row style={{ textAlign: "center" }}>
+              <button
+                className="form-control-btn-upload"
+                onClick={generatePDF}
+                type="button"
+              >
+                Download PDF
+              </button>
+            </Row>
           </Col>
         </Row>
+        <BackToTopBtn />
         <ToastContainer />
       </Container>
     </motion.div>
