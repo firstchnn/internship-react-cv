@@ -70,11 +70,14 @@ export const ManageSkill = () => {
                                 <Form.Control type="text" id="category" name="category" value={categoryName} placeholder="don't mind me" onChange={(e) => setCategoryName(e.target.value)} required/>
                             </FloatingLabel>
                             </Form.Group>
+                            <Row style={{textAlign: 'center'}}>
+                            <Col>
                             <input
                       className="form-control-btn-main"
                       type="submit"
                       value="Update Skill"
-                    />
+                    /></Col>
+                            </Row>
                         </Form>
                     </Col>
                     <Col className="mt-3">

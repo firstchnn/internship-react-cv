@@ -36,7 +36,7 @@ export const SearchApplicant = () => {
     toast.warn('Please enter Major Skill', {position: toast.POSITION.BOTTOM_RIGHT, autoClose: 1500})
   
   }
-  const [data, setData] = useState({ data: [] });
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState("");
   const [bufferData, setBufferData] = useState([]);
@@ -59,12 +59,14 @@ export const SearchApplicant = () => {
   ];
 const [selectedOption, setSelectedOption] = useState("");
   const applyFilter = async () => {
-    if((nameFilter == "") && (skillFilter == "") && (expFilter == "") && (sortFilter == "")){
+    if((nameFilter == "") && (skillFilter == "") && (expFilter == "") && (sortFilter == "" || sortFilter == null || sortFilter == "none")){
       await warnNotify();
     }else{
+      // await setCurrData(data);
       await successNotify();
       if (nameFilter != "") {
         await console.log("apply namefilter");
+        await console.log(currData);
         await setSelectedCV(nameFilter);
         let inpLen = nameFilter.length;
         let found = false;
@@ -80,6 +82,8 @@ const [selectedOption, setSelectedOption] = useState("");
           // currData.length = 0;
           // await setCurrData
           await setCurrData(temp);
+          await console.log(temp)
+          // await forceUpdate();
           
           // await console.log(currData.length)
         }
@@ -115,7 +119,7 @@ const [selectedOption, setSelectedOption] = useState("");
           let found = false;
           let temp = [];
           for (let i = 0; i < currData.length; i++) {
-            if (expFilter == currData[i].majorExp) {
+            if (parseInt(expFilter) == currData[i].majorExp) {
               temp.push(currData[i]);
               found = true;
             }
@@ -128,7 +132,7 @@ const [selectedOption, setSelectedOption] = useState("");
           warnSkillNotify();
         }
       }
-      if(sortFilter != "" && sortFilter != "none" ){
+      if(sortFilter != "" && sortFilter != null && sortFilter != "none"){
         await console.log("sortFilter: " + sortFilter);
         let temp = [];
         if(sortFilter === "name"){
@@ -136,6 +140,9 @@ const [selectedOption, setSelectedOption] = useState("");
         }else if(sortFilter === "experience"){
           temp = currData.sort(dynamicSort("majorExp"));
         }
+        // else if(sortFilter === "default"){
+        //   temp = data;
+        // }
         await setCurrData(temp);
         await forceUpdate();
       };
@@ -219,7 +226,12 @@ const handleChange = (value) => {
     }
   }
 
-  const resetFilter = async () => {
+  const resetFilter = async() => {
+    await resetFilterOnce();
+    await resetFilterOnce();
+    await resetNotify();  
+  };
+  const resetFilterOnce = async() => {
     await setIsMajor(true);
     await setNameFilter("");
     await setSkillFilter("");
@@ -229,9 +241,10 @@ const handleChange = (value) => {
     // await clearList();
     await setCurrData(data);
     await forceUpdate();
-    await resetNotify();  
+    
     // await renderList();
-  };
+    await console.log(currData);
+  }
 
 
   const hasNumber = (mystring) => {
@@ -265,7 +278,8 @@ const handleChange = (value) => {
   }
 
   const expHandleChange = (exp) => {
-    if(hasText(exp)){
+    let isnum = /^\d+$/.test(exp);
+    if(isnum){
       setExpFilter(exp);
     }else{
       warnTextNotify();
@@ -328,11 +342,8 @@ const handleChange = (value) => {
                       Total relevant experience
                     </Form.Label>
                     <Form.Control
-                      type="number"
+                      type="text"
                       id="expFilter"
-                      min={0}
-                      max={100}
-                      step={1}
                       value={expFilter}
                       onChange={(e) => expHandleChange(e.target.value)}
                       // onKeyDown="javascript: return ['Backspace','Delete','ArrowLeft','ArrowRight'].includes(event.code) ? true : !isNaN(Number(event.key)) && event.code!=='Space'"

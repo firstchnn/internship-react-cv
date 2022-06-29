@@ -52,6 +52,13 @@ export const NewApplicant = () => {
     });
   };
 
+  const warnCapitalNotify = () => {
+    toast.warn("Do not use all capital letters to type candidate's name", {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      autoClose: 1500,
+    });
+  };
+
   const langOptions = [
     { value: "English", label: "English" },
     { value: "Chinese", label: "Chinese" },
@@ -135,6 +142,9 @@ export const NewApplicant = () => {
   };
   const nameChangeHandle = (currName) => {
     if (!hasNumber(currName)) {
+      if(currName.toUpperCase() === currName){
+        warnCapitalNotify();
+      }
       setCurrName(currName);
     } else {
       warnNumberNotify();
@@ -360,7 +370,7 @@ export const NewApplicant = () => {
                 encType="multipart/form-data"
                 className="newApp-form"
               >
-                <Accordion defaultActiveKey={['0']} alwaysOpen>
+                <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow" style={{borderRadius:'16px'}}>
                   {/* POSITION */}
                   <Accordion.Item eventKey="0">
                     <Accordion.Header><b>Applied for</b></Accordion.Header>
@@ -878,7 +888,7 @@ export const NewApplicant = () => {
             </Row>
             <Row>
               <Container
-                className="shadow"
+                className="shadow mt-2"
                 ref={ref}
                 id="report"
                 style={{ borderRadius: "8px" }}
