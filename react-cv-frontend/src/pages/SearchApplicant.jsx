@@ -52,6 +52,7 @@ export const SearchApplicant = () => {
   const [sortFilter, setSortFilter] = useState("");
   const [ignored, forceUpdate] = useReducer(x => x+1,0);
   const [value, setValue] = useState("none");
+  const [totalApplicant, setTotalApplicant] = useState(0);
   const sortOptions = [
     { value: "none", label: "None" },
     { value: "experience", label: "Experience" },
@@ -82,7 +83,8 @@ const [selectedOption, setSelectedOption] = useState("");
           // currData.length = 0;
           // await setCurrData
           await setCurrData(temp);
-          await console.log(temp)
+          // await console.log(temp)
+          setTotalApplicant(temp.length);
           // await forceUpdate();
           
           // await console.log(currData.length)
@@ -110,6 +112,7 @@ const [selectedOption, setSelectedOption] = useState("");
         if (found) {
           // currData.length = 0;
           setCurrData(temp);
+          setTotalApplicant(temp.length);
         }
       }
       if (expFilter != "") {
@@ -127,6 +130,7 @@ const [selectedOption, setSelectedOption] = useState("");
           if (found) {
             // currData.length = 0;
             setCurrData(temp);
+            setTotalApplicant(temp.length);
           }
         } else {
           warnSkillNotify();
@@ -187,6 +191,7 @@ const handleChange = (value) => {
         }
         const result = await response.json();
         await setData(result);
+        setTotalApplicant(result.length);
         for (let i = 0; i < result.length; i++) {
           currData[i] = result[i];
           bufferData[i] = result[i].file;
@@ -304,8 +309,8 @@ const handleChange = (value) => {
     >
       <Container className="filter-panel">
         <Row>
-        <Container className="d-flex justify-content-start align-items-center">
-            <h1>Search Applicant</h1>
+        <Container className="d-flex justify-content-start align-items-bottom">
+            <h1>Search Applicant : ({totalApplicant})</h1>
           </Container>
         </Row>
         <Row className="filter-row shadow-lg">
