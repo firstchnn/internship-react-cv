@@ -25,7 +25,7 @@ export const AddSkillComplete = () => {
     >
       <Container classname="mt-3">
         <div className="home-body-header">
-          <h1>Add new Applicant complete</h1>
+          <h1>Update skill complete</h1>
         </div>
         <Row>
         <Container>
@@ -36,7 +36,7 @@ export const AddSkillComplete = () => {
           <Col className="home-col">
             <Container className="mt-0">
               <a className="p-link" onClick={() => navigate("/manageSkill")}>
-                Add another Skill?
+                Update more Skill ?
               </a>
             </Container>
           </Col>

@@ -22,16 +22,37 @@ import "react-toastify/dist/ReactToastify.css";
 import JsPDF from "jspdf";
 import { BackToTopBtn } from "../components/BackToTopBtn";
 import logo from "../icon/Logo_superhr.png";
+import "../fonts/THSarabunNew-normal";
+import html2canvas from 'html2canvas';
 export const NewApplicant = () => {
   const ref = useRef(null);
   const [divHeight, setDivHeight] = useState(448);
 
-  const generatePDF = () => {
-    const report = new JsPDF("p", "px", [660, 700]);
-    report.html(document.querySelector("#report")).then(() => {
-      report.save(currName.split(" ")[0] + "-" + position + "-report.pdf");
-      // console.log(report.output('datauri'));
-    });
+  const generatePDF = async() => {
+    const input = document.getElementById('report')
+    html2canvas(input,{quality: 4,
+      scale: 5,logging: true, letterRendering : 1, useCORS : true})
+    .then(canvas => {
+      var scaleBy = 5;
+      const imgWidth = 660 ;
+      const imgHeight = (canvas.height * imgWidth / canvas.width);
+      const imgData = canvas.toDataURL('img/png');
+      const pdf = new JsPDF('p','px',[660 , 700]);
+      pdf.addImage(imgData, 'PNG',0,0,imgWidth,imgHeight);
+      pdf.save(currName.split(" ")[0] + "-" + position + "-report.pdf");
+    })
+    // const report = new JsPDF("p", "px", [660, 700]);
+    // await report.setFont('THSarabunNew','normal');
+    // await report.setLanguage('th-TH');
+    // // await report.text(15, 15, 'สวัสดี ยินดีที่ได้รู้จักคุณ');
+
+    // // await report.save('custom_fonts.pdf');
+    // report.html(document.querySelector("#report")).then(() => {
+      
+    //   console.log(report.getFontList());
+      
+    //   // console.log(report.output('datauri'));
+    // });
   };
   const warnNumberNotify = () => {
     toast.warn("Cannot insert Number into this field", {
@@ -888,7 +909,7 @@ export const NewApplicant = () => {
             </Row>
             <Row>
               <Container
-                className="shadow mt-2"
+                className="shadow mt-2 font-link"
                 ref={ref}
                 id="report"
                 style={{ borderRadius: "8px" }}

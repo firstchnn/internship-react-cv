@@ -13,7 +13,9 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.font-link{
+  font-family: 'Sarabun', sans-serif;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -300,5 +302,9 @@ button:disabled {
 {
     margin:0;
     padding:0;
+}
+
+.delete-btn:hover{
+  cursor: pointer;
 }
 
