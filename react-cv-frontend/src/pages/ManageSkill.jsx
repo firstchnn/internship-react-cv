@@ -14,7 +14,7 @@ import {
 import { useState } from "react";
 import { useEffect, useReducer } from "react";
 import Axios from "axios";
-
+import { BackToTopBtn } from "../components/BackToTopBtn";
 export const ManageSkill = () => {
   const [skillSets, setSkillSets] = useState([]);
 
@@ -161,6 +161,7 @@ export const ManageSkill = () => {
             </Row>
           </Col>
         </Row>
+        <BackToTopBtn/>
       </Container>
     </motion.div>
   );

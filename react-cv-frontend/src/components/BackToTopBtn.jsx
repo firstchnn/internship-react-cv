@@ -25,7 +25,7 @@ export const BackToTopBtn =() => {
             // <button className="rounded-circle" style={{position:"fixed", bottom: "3rem", right : "3rem",width: "4rem",height:"4rem"}} onClick={scrollUp}>
             //     <img src={logo}></img>
             // </button>
-            <img className="totop-logo" style={{position:"fixed", bottom: "3rem", right : "3rem",width: "4rem",height:"4rem"}} onClick={scrollUp} src={logo}></img>
+            <img className="totop-logo" style={{position:"fixed", bottom: "4.5rem", right : "3rem",width: "4rem",height:"4rem", zIndex: "99"}} onClick={scrollUp} src={logo}></img>
         )
 
         }

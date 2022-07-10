@@ -13,8 +13,9 @@ function App() {
     <div className="App font-link">
       <BrowserRouter>
       <NavBar/>
+      <Footer/>
       <AnimatedRoutes/>
-      {/* <Footer/> */}
+      
       </BrowserRouter>
     </div>
   )

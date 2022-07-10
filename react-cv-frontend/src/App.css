@@ -75,12 +75,16 @@ button {
 
 .footer-container{
   padding : 1rem;
-  background-color: #333;
-  color : white;
+  background-color: white;
+  /* color : white; */
+  z-index: 41;
+  flex: 0 0 50px;
+  /* margin-top: auto; */
   position: fixed;
   bottom:0;
   height:7vh;
   width: 100%;
+  text-align: center;
 }
 
 .home-body{
