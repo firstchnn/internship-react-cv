@@ -74,18 +74,6 @@ export const NewApplicant = () => {
       pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
       pdf.save(currName.split(" ")[0] + "-" + position + "-report.pdf");
     });
-    // const report = new JsPDF("p", "px", [660, 700]);
-    // await report.setFont('THSarabunNew','normal');
-    // await report.setLanguage('th-TH');
-    // // await report.text(15, 15, 'สวัสดี ยินดีที่ได้รู้จักคุณ');
-
-    // // await report.save('custom_fonts.pdf');
-    // report.html(document.querySelector("#report")).then(() => {
-
-    //   console.log(report.getFontList());
-
-    //   // console.log(report.output('datauri'));
-    // });
   };
   const warnNumberNotify = () => {
     toast.warn("Cannot insert Number into this field", {
@@ -222,91 +210,142 @@ export const NewApplicant = () => {
   const [position, setPosition] = useState("");
   const [expPosition, setExpPosition] = useState("");
   const [expProject, setExpProject] = useState("");
+  const [expCompany, setExpCompany] = useState("");
   const [industry, setIndustry] = useState("");
   const [certificate, setCertificate] = useState("");
+  const [responsibility, setResponsibility] = useState("");
+  const [splitRes, setSplitRes] = useState([]);
+  const [degree, setDegree] = useState("");
+  const [gradYear, setGradYear] = useState("");
+  const [univ, setUniv] = useState("");
+  const [gpa, setGPA] = useState("");
+  const degreeChangeHandle = (degree) => {
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[\\]|[ ]|[]|[\n]|[.]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
+
+    if (!hasNumber(degree)) {
+      if (!re.test(degree)) {
+        warnEngNotify();
+      } else {
+        setDegree(degree);
+      }
+    } else {
+      warnNumberNotify();
+    }
+  };
+  const gradYearChangeHandle = (year) => {
+    let isnum = /^\d+$/.test(year);
+    if (isnum) {
+      if (year.length <= 10) {
+        setGradYear(year);
+      }
+    } else {
+      warnTextNotify();
+    }
+  };
+  const univChangeHandle = (univ) => {
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[\\]|[ ]|[]|[\n]|[.]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
+
+    if (!hasNumber(univ)) {
+      if (!re.test(univ)) {
+        warnEngNotify();
+      } else {
+        setUniv(univ);
+      }
+    } else {
+      warnNumberNotify();
+    }
+  };
   const hasNumber = (mystring) => {
     return /\d/.test(mystring);
   };
   const nameChangeHandle = (currName) => {
-    var re = new RegExp("^([A-Z]|[a-z]|[0-9]|[/]|[\\]|[ ]|[\n]|[.]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$", "g");
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[\\]|[ ]|[]|[\n]|[.]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
     let splitName = [];
     let firstName = "";
     let lastName = "";
     // if(currName.slice(-1) === ' '){
     //   setCurrName(currName);
     // }
-    if(!hasNumber(currName)){
-      if(re.test(currName)){
+    if (!hasNumber(currName)) {
+      if (re.test(currName)) {
         if (hasWhiteSpace(currName)) {
-          if(currName.slice(-1) === ' '){
+          if (currName.slice(-1) === " ") {
             setCurrName(currName);
           }
           splitName = currName.split(" ");
           firstName = splitName[0];
           lastName = splitName[1];
         }
-        if(splitName.length === 1) {
+        if (splitName.length === 1) {
           firstName = currName;
-          if(firstName.length > 1){
-
-            if(firstName.slice(-1).toUpperCase() === firstName.slice(-1)){
+          if (firstName.length > 1) {
+            if (firstName.slice(-1).toUpperCase() === firstName.slice(-1)) {
               warnCapitalNotify();
-            }else{
+            } else {
               setCurrName(currName);
             }
-          }else{
-            if(firstName.toUpperCase() === firstName){
+          } else {
+            if (firstName.toUpperCase() === firstName) {
               setCurrName(currName);
-            }else{
+            } else {
               warnFirstCapitalNotify();
             }
-            
           }
-        }else{
-          if(lastName.length > 1){
-            if(lastName.slice(-1).toUpperCase() === lastName.slice(-1)){
+        } else {
+          if (lastName.length > 1) {
+            if (lastName.slice(-1).toUpperCase() === lastName.slice(-1)) {
               warnCapitalNotify();
-            }else{
+            } else {
               setCurrName(currName);
             }
-          }else{
-            if(lastName.toUpperCase() === lastName){
+          } else {
+            if (lastName.toUpperCase() === lastName) {
               setCurrName(currName);
-            }else{
+            } else {
               warnFirstCapitalNotify();
             }
           }
         }
-      }else{
+      } else {
         warnThaiNotify();
       }
-    }else{
+    } else {
       warnNumberNotify();
     }
     // console.log('First name: ' + firstName + ' last name: ' + lastName + 'split name size: ' + splitName.length);
-    
   };
-  function hasWhiteSpace(s) 
-{
-    var reWhiteSpace = new RegExp("/^\s+$/");
+  function hasWhiteSpace(s) {
+    var reWhiteSpace = new RegExp("/^s+$/");
 
     // Check for white space
     if (reWhiteSpace.test(s)) {
-        //alert("Please Check Your Fields For Spaces");
-        return false;
+      //alert("Please Check Your Fields For Spaces");
+      return false;
     }
 
     return true;
-}
+  }
 
   const thaiChangeHandle = (currName) => {
-    var re = new RegExp("^([ ]|[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$", "g");
-    
+    var re = new RegExp(
+      "^([ ]|[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
+
     if (!hasNumber(currName)) {
-      if(!re.test(currName)){
+      if (!re.test(currName)) {
         warnEngNotify();
-      }else{
-        setCurrThaiName(currName)
+      } else {
+        setCurrThaiName(currName);
       }
     } else {
       warnNumberNotify();
@@ -324,6 +363,23 @@ export const NewApplicant = () => {
   const expPositionChangeHandle = (currName) => {
     if (!hasNumber(currName)) {
       setExpPosition(currName);
+    } else {
+      warnNumberNotify();
+    }
+  };
+
+  const expCompanyChangeHandle = (currName) => {
+    if (!hasNumber(currName)) {
+      setExpCompany(currName);
+    } else {
+      warnNumberNotify();
+    }
+  };
+
+  const responsibilityChangeHandle = (currName) => {
+    if (!hasNumber(currName)) {
+      setResponsibility(currName);
+      setSplitRes(currName.split(","));
     } else {
       warnNumberNotify();
     }
@@ -387,29 +443,31 @@ export const NewApplicant = () => {
   const [currDB, setCurrDB] = useState("");
   const [currIDE, setCurrIDE] = useState("");
   const handleMajorChange = (e) => {
-    var re = new RegExp("^([A-Z]|[a-z]|[0-9]|[/]|[@]|[.]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$", "g");
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[@]|[.]|[,]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
     let skill = e.split(",");
-    let latest = skill[skill.length-1];
-    if(re.test(e)){
-      if(e === ""){
+    let latest = skill[skill.length - 1];
+    if (re.test(e)) {
+      if (e === "") {
         setMajorSkill(e);
-      }
-      else if(e[e.length-1] === ","){
+      } else if (e[e.length - 1] === ",") {
         setMajorSkill(e);
-      }else{
-        if(latest.length <= 1){
-          console.log('base: ' + latest.slice(-1));
-          console.log('upper: ' + latest.slice(-1).toUpperCase());
-          if(latest[0] === latest[0].toUpperCase()){
+      } else {
+        if (latest.length <= 1) {
+          console.log("base: " + latest.slice(-1));
+          console.log("upper: " + latest.slice(-1).toUpperCase());
+          if (latest[0] === latest[0].toUpperCase()) {
             setMajorSkill(e);
-          }else{
+          } else {
             warnFirstSkillNotify();
           }
-        }else{
+        } else {
           setMajorSkill(e);
         }
       }
-    }else{
+    } else {
       warnThaiNotify();
     }
     let cat = [];
@@ -450,29 +508,31 @@ export const NewApplicant = () => {
   };
 
   const handleMinorChange = (e) => {
-    var re = new RegExp("^([A-Z]|[a-z]|[0-9]|[/]|[@]|[.]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$", "g");
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[@]|[.]|[,]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
     let skill = e.split(",");
-    let latest = skill[skill.length-1];
-    if(re.test(e)){
-      if(e === ""){
+    let latest = skill[skill.length - 1];
+    if (re.test(e)) {
+      if (e === "") {
         setMinorSkill(e);
-      }
-      else if(e[e.length-1] === ","){
+      } else if (e[e.length - 1] === ",") {
         setMinorSkill(e);
-      }else{
-        if(latest.length <= 1){
-          console.log('base: ' + latest.slice(-1));
-          console.log('upper: ' + latest.slice(-1).toUpperCase());
-          if(latest[0] === latest[0].toUpperCase()){
+      } else {
+        if (latest.length <= 1) {
+          console.log("base: " + latest.slice(-1));
+          console.log("upper: " + latest.slice(-1).toUpperCase());
+          if (latest[0] === latest[0].toUpperCase()) {
             setMinorSkill(e);
-          }else{
+          } else {
             warnFirstSkillNotify();
           }
-        }else{
+        } else {
           setMinorSkill(e);
         }
       }
-    }else{
+    } else {
       warnThaiNotify();
     }
     let cat = [];
@@ -492,9 +552,39 @@ export const NewApplicant = () => {
   const [softSkill, setSoftSkill] = useState("");
   const [splitSoft, setSplitSoft] = useState([]);
   const handleSoftChange = (e) => {
-    setSoftSkill(e);
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[,]|[@]|[.]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
+
     let skill = e.split(",");
-    setSplitSoft(skill);
+    let latest = skill[skill.length - 1];
+
+    if (re.test(e)) {
+      if (e === "") {
+        setSoftSkill(e);
+        setSplitSoft(skill);
+      } else if (e[e.length - 1] === ",") {
+        setSoftSkill(e);
+        setSplitSoft(skill);
+      } else {
+        if (latest.length <= 1) {
+          console.log("base: " + latest.slice(-1));
+          console.log("upper: " + latest.slice(-1).toUpperCase());
+          if (latest[0] === latest[0].toUpperCase()) {
+            setSoftSkill(e);
+            setSplitSoft(skill);
+          } else {
+            warnFirstSkillNotify();
+          }
+        } else {
+          setSoftSkill(e);
+          setSplitSoft(skill);
+        }
+      }
+    } else {
+      warnThaiNotify();
+    }
   };
 
   const handletotalExpChange = async (e) => {
@@ -526,9 +616,14 @@ export const NewApplicant = () => {
   }, []);
 
   const [prescreenDate, setPrescreenDate] = useState(new Date());
-  const [interviewDate, setInterviewDate] = useState(new Date());
+  const [interviewDateFrom, setInterviewDateFrom] = useState(new Date());
+  const [interviewDateTo, setInterviewDateTo] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [birthDate, setBirthDate] = useState(new Date());
+  const [workStart, setWorkStart] = useState(new Date());
+  const [workEnd, setWorkEnd] = useState(new Date());
+  const [startString, setStartString] = useState("");
+  const [endString, setEndString] = useState("");
   const [age, setAge] = useState(null);
   const handleDOB = (date) => {
     setBirthDate(date);
@@ -537,21 +632,39 @@ export const NewApplicant = () => {
     let numyear = parseInt(subyear);
     setAge(2022 - numyear);
   };
+  const workStartChangeHandle = (date) => {
+    console.log(date.toString());
+    setStartString(
+      date.toString().slice(4, 7) + "/" + date.toString().slice(11, 15)
+    );
+    setWorkStart(date);
+  };
+
+  const workEndChangeHandle = (date) => {
+    console.log(date.toString());
+    setEndString(
+      date.toString().slice(4, 7) + "/" + date.toString().slice(11, 15)
+    );
+    setWorkEnd(date);
+  };
 
   const [email, setEmail] = useState("");
   const [tel, setTel] = useState("");
   const handleEmailChange = (email) => {
-    var re = new RegExp("^([A-Z]|[a-z]|[0-9]|[/]|[@]|[.]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$", "g");
-    if(re.test(email)){
+    var re = new RegExp(
+      "^([A-Z]|[a-z]|[0-9]|[/]|[@]|[.]|[\\]|[ ]|[\n]&[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ])+$",
+      "g"
+    );
+    if (re.test(email)) {
       setEmail(email);
-    }else{
+    } else {
       warnThaiNotify();
     }
-  }
+  };
   const handleTelChange = (tel) => {
     let isnum = /^\d+$/.test(tel);
     if (isnum) {
-      if(tel.length <= 10){
+      if (tel.length <= 10) {
         setTel(tel);
       }
     } else {
@@ -575,7 +688,8 @@ export const NewApplicant = () => {
       langValue.length <= 0 ||
       proficientValue.length <= 0 ||
       prescreenDate.length <= 0 ||
-      interviewDate.length <= 0 ||
+      interviewDateFrom.length <= 0 ||
+      interviewDateTo.length <= 0 ||
       startDate.length <= 0 ||
       statusValue.length <= 0
     ) {
@@ -584,6 +698,42 @@ export const NewApplicant = () => {
     if (iswarn) {
       warnEmptyNotify();
     }
+  };
+
+  const [workList, setWorkList] = useState([
+    { company: "", position: "", project: "", industries: "", response: "", workStart: new Date(),workEnd:new Date() }
+  ]);
+
+  const handleServiceChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...workList];
+    list[index][name] = value;
+    setWorkList(list);
+    var proj= "";
+    var inds = "";
+    for(let i = 0; i < workList.length; i++){
+      let temp = workList[i].project;
+      proj = proj + ', ' + temp;
+      setExpProject(proj.slice(2,proj.length));
+    }
+    for(let i = 0; i < workList.length; i++){
+      let temp = workList[i].industries;
+      inds = inds + ', ' + temp;
+      setIndustry(inds.slice(2,inds.length));
+    }
+  };
+
+  const handleServiceRemove = (index) => {
+    const list = [...workList];
+    list.splice(index, 1);
+    setWorkList(list);
+  };
+
+  const handleServiceAdd = () => {
+    setWorkList([
+      ...workList,
+      { company: "", position: "", project: "", industries: "", response: "" , workStart:"",workEnd:""},
+    ]);
   };
 
   return (
@@ -716,7 +866,9 @@ export const NewApplicant = () => {
                                 id="email"
                                 name="email"
                                 value={email}
-                                onChange={(e) => handleEmailChange(e.target.value)}
+                                onChange={(e) =>
+                                  handleEmailChange(e.target.value)
+                                }
                                 autoComplete="new-password"
                                 placeholder="email"
                                 required
@@ -772,52 +924,109 @@ export const NewApplicant = () => {
                               />
                             </FloatingLabel>
                           </Form.Group>
-                        </Col>
-                        <Col>
-                          <Form.Group>
-                            <FloatingLabel label="GPA">
+                          <Form.Group className="mt-3">
+                            <FloatingLabel label="Certificates or Training">
                               <Form.Control
-                                type="number"
-                                id="gpa"
-                                name="gpa"
-                                min={0}
-                                max={4}
-                                step={0.01}
+                                placeholder="Certificates or Training"
+                                type="text"
+                                id="certificate"
+                                name="certificate"
+                                value={certificate}
+                                onChange={(e) =>
+                                  certificateChangeHandle(e.target.value)
+                                }
                                 autoComplete="new-password"
-                                placeholder="GPA"
-                                required
                               />
                             </FloatingLabel>
                           </Form.Group>
                         </Col>
                       </Row>
+                      {/* <Row>
+                      <Col>
+                          <Form.Label htmlFor="workStart">
+                            From
+                          </Form.Label>
+                          <DatePicker
+                            selected={workStart}
+                            onChange={(date) => workStartChangeHandle(date)}
+                            id="workStart"
+                            name="workStart"
+                            // maxDate={workEnd}
+                            required
+                          />
+                        </Col>
+                        <Col>
+                          <Form.Label htmlFor="workEnd">
+                            To
+                          </Form.Label>
+                          <DatePicker
+                            selected={workEnd}
+                            onChange={(date) => workEndChangeHandle(date)}
+                            id="workEnd"
+                            name="workEnd"
+                            // maxDate={workEnd}
+                            required
+                          />
+                        </Col>
+                      </Row> */}
                       <Row>
-                        <Form.Group className="mb-3">
-                          <FloatingLabel label="Experience Position">
+                        {workList.map((singleService, index) => (
+                          <div key={index} className="services py-3 mb-3">
+                            <div className="first-division">
+                              <Card>
+                                <Card.Header>
+                          <Row>
+                            <Col>
+                            <h5>{index+1}</h5></Col>
+                            <Col style={{textAlign: 'right'}}>{workList.length !== 1 && (
+                                <h5 onClick={() => handleServiceRemove(index)}
+                                className="remove-btn">x</h5>
+                              )}
+                            </Col>
+                          </Row>
+                                </Card.Header>
+                                <Card.Body>
+                                <Form.Group className="mb-3">
+                                <FloatingLabel label="Company">
+                                  <Form.Control
+                                    placeholder="Company"
+                                    type="text"
+                                    id="company"
+                                    name="company"
+                                    value={singleService.company}
+                                    onChange={(e) =>
+                                      handleServiceChange(e, index)
+                                    }
+                                    autoComplete="new-password"
+                                  />
+                                </FloatingLabel>
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                                <FloatingLabel label="Position">
+                                  <Form.Control
+                                    placeholder="Experience Position"
+                                    type="text"
+                                    id="position"
+                                    name="position"
+                                    value={singleService.position}
+                                    onChange={(e) =>
+                                      handleServiceChange(e, index)
+                                    }
+                                    autoComplete="new-password"
+                                  />
+                                </FloatingLabel>
+                              </Form.Group>
+                              <Form.Group className="mb-3">
+                          <FloatingLabel label="Project">
                             <Form.Control
-                              placeholder="Experience Position"
+                              placeholder="Project"
                               type="text"
-                              id="expPosition"
-                              name="expPosition"
-                              value={expPosition}
-                              onChange={(e) =>
-                                expPositionChangeHandle(e.target.value)
-                              }
-                              autoComplete="new-password"
-                            />
-                          </FloatingLabel>
-                        </Form.Group>
-                        <Form.Group className="mb-3">
-                          <FloatingLabel label="Experience Project">
-                            <Form.Control
-                              placeholder="Experience Project"
-                              type="text"
-                              id="expProject"
-                              name="expProject"
-                              value={expProject}
-                              onChange={(e) =>
-                                expProjectChangeHandle(e.target.value)
-                              }
+                              id="project"
+                              name="project"
+                              value={singleService.project}
+                                    onChange={(e) =>
+                                      handleServiceChange(e, index)
+                                    }
                               autoComplete="new-password"
                             />
                           </FloatingLabel>
@@ -827,31 +1036,77 @@ export const NewApplicant = () => {
                             <Form.Control
                               placeholder="Business Industries"
                               type="text"
-                              id="industry"
-                              name="industry"
-                              value={industry}
-                              onChange={(e) =>
-                                industryChangeHandle(e.target.value)
-                              }
+                              id="industries"
+                              name="industries"
+                              value={singleService.industries}
+                                    onChange={(e) =>
+                                      handleServiceChange(e, index)
+                                    }
                               autoComplete="new-password"
                             />
                           </FloatingLabel>
                         </Form.Group>
-                        <Form.Group>
-                          <FloatingLabel label="Certificates or Training">
+                        <Form.Group >
+                          <FloatingLabel label="Responsibility">
                             <Form.Control
-                              placeholder="Certificates or Training"
+                              placeholder="Responsibility"
                               type="text"
-                              id="certificate"
-                              name="certificate"
-                              value={certificate}
-                              onChange={(e) =>
-                                certificateChangeHandle(e.target.value)
-                              }
+                              id="response"
+                              name="response"
+                              value={singleService.response}
+                                    onChange={(e) =>
+                                      handleServiceChange(e, index)
+                                    }
                               autoComplete="new-password"
                             />
                           </FloatingLabel>
+                          <Row>
+                          <Col>
+                          <Form.Label htmlFor="workStart">
+                            From
+                          </Form.Label>
+                          <DatePicker
+                            selected={singleService.workStart}
+                            onChange={(e) =>
+                              handleServiceChange(e, index)
+                            }
+                            id="workStart"
+                            name="workStart"
+                            // maxDate={workEnd}
+                            // required
+                          />
+                        </Col>
+                        <Col>
+                          <Form.Label htmlFor="workEnd">
+                            To
+                          </Form.Label>
+                          <DatePicker
+                            selected={singleService.workEnd}
+                            onChange={(e) =>
+                              handleServiceChange(e, index)
+                            }
+                            id="workEnd"
+                            name="workEnd"
+                            // maxDate={workEnd}
+                            // required
+                          />
+                        </Col>
+                          </Row>
+                          <Row style={{textAlign: 'right'}} className="mt-3">
+                          <Col>{workList.length - 1 === index &&
+                                workList.length < 4 && (
+                                  <button
+                className="form-control-btn-upload" onClick={handleServiceAdd}
+                                  >+</button>
+                                )}</Col>
+                          </Row>
                         </Form.Group>
+                        
+                                </Card.Body>
+                              </Card>                             
+                            </div>
+                          </div>
+                        ))}
                       </Row>
                     </Accordion.Body>
                   </Accordion.Item>
@@ -861,9 +1116,14 @@ export const NewApplicant = () => {
                       <b>Skills</b>
                     </Accordion.Header>
                     <Accordion.Body>
-                      <Row><Col>
-                        <p style>*Add more skill with "," and Skill should start with Capital letter</p>
-                        </Col></Row>
+                      <Row>
+                        <Col>
+                          <p>
+                            *Add more skill with "," and Skill should start with
+                            Capital letter
+                          </p>
+                        </Col>
+                      </Row>
                       <Row>
                         <Col>
                           <Form.Group className="mb-3">
@@ -1032,8 +1292,90 @@ export const NewApplicant = () => {
                       </Row>
                     </Accordion.Body>
                   </Accordion.Item>
-                  {/* Applicant Status */}
+                  {/* Education */}
                   <Accordion.Item eventKey="4">
+                    <Accordion.Header>
+                      <b>Educations</b>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Row>
+                        <Col>
+                          <Form.Group>
+                            <FloatingLabel label="Degree">
+                              <Form.Control
+                                type="text"
+                                id="degree"
+                                name="degree"
+                                value={degree}
+                                onChange={(e) =>
+                                  degreeChangeHandle(e.target.value)
+                                }
+                                autoComplete="new-password"
+                                placeholder="degree"
+                              />
+                            </FloatingLabel>
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <FloatingLabel label="Graduate Year">
+                              <Form.Control
+                                type="text"
+                                id="year"
+                                name="year"
+                                value={gradYear}
+                                onChange={(e) =>
+                                  gradYearChangeHandle(e.target.value)
+                                }
+                                autoComplete="new-password"
+                                placeholder="degree"
+                              />
+                            </FloatingLabel>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col>
+                          <Form.Group>
+                            <FloatingLabel label="University">
+                              <Form.Control
+                                type="text"
+                                id="univ"
+                                name="univ"
+                                value={univ}
+                                onChange={(e) =>
+                                  univChangeHandle(e.target.value)
+                                }
+                                autoComplete="new-password"
+                                placeholder="univ"
+                              />
+                            </FloatingLabel>
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <FloatingLabel label="GPA">
+                              <Form.Control
+                                type="number"
+                                id="gpa"
+                                name="gpa"
+                                min={0}
+                                max={4}
+                                step={0.01}
+                                value={gpa}
+                                onChange={(e) => setGPA(e.target.value)}
+                                autoComplete="new-password"
+                                placeholder="GPA"
+                                required
+                              />
+                            </FloatingLabel>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  {/* Applicant Status */}
+                  <Accordion.Item eventKey="5">
                     <Accordion.Header>
                       <b>Applicant Status</b>
                     </Accordion.Header>
@@ -1053,16 +1395,14 @@ export const NewApplicant = () => {
                           />
                         </Col>
                         <Col>
-                          <Form.Label htmlFor="interviewDate">
-                            Interview Date
+                          <Form.Label htmlFor="startDate">
+                            Availability
                           </Form.Label>
                           <DatePicker
-                            selected={interviewDate}
-                            onChange={(date) => setInterviewDate(date)}
-                            id="interviewDate"
-                            name="interviewDate"
-                            minDate={prescreenDate}
-                            maxDate={interviewDate}
+                            selected={startDate}
+                            onChange={(date) => setStartDate(date)}
+                            id="startDate"
+                            name="startDate"
                             required
                           />
                         </Col>
@@ -1079,23 +1419,49 @@ export const NewApplicant = () => {
                             required
                           />
                         </Col>
+                      </Row>
+                      <Row>
                         <Col>
-                          <Form.Label htmlFor="startDate">
-                            Availability
+                          <Form.Label htmlFor="interviewDateFrom">
+                            Interview Date
                           </Form.Label>
                           <DatePicker
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            id="startDate"
-                            name="startDate"
+                            selected={interviewDateFrom}
+                            onChange={(date) => setInterviewDateFrom(date)}
+                            id="interviewDateFrom"
+                            name="interviewDateFrom"
+                            minDate={prescreenDate}
+                            // maxDate={interviewDateFrom}
                             required
                           />
+                        </Col>
+                        <Col>
+                          <Form.Label htmlFor="interviewDateTo">
+                            Interview Date
+                          </Form.Label>
+                          <DatePicker
+                            selected={interviewDateTo}
+                            onChange={(date) => setInterviewDateTo(date)}
+                            id="interviewDateTo"
+                            name="interviewDateTo"
+                            minDate={interviewDateFrom}
+                            // maxDate={interviewDateFrom}
+                            required
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col>
+                          <Form.Label htmlFor="interviewNotes">
+                            Interview Notes
+                          </Form.Label>
+                          <textarea></textarea>
                         </Col>
                       </Row>
                     </Accordion.Body>
                   </Accordion.Item>
                   {/* Files */}
-                  <Accordion.Item eventKey="5">
+                  <Accordion.Item eventKey="6">
                     <Accordion.Header>
                       <b>Files</b>
                     </Accordion.Header>
@@ -1333,6 +1699,70 @@ export const NewApplicant = () => {
                           <p> : {currIDE}</p>
                         </div>
                       </Col>
+                    </Row>
+                  )}
+                </Row>
+                <Row style={{ textAlign: "left" }}>
+                  <h4>
+                    <b>Professional Experiences</b>
+                  </h4>
+                </Row>
+                {workList && workList.map((work,index) => (
+                  <Row>
+                    <Row>
+                  <Col>
+                    <b>
+                      Company name : {work.company} {/*| {startString} - {endString}{" "}*/}
+                    </b>
+                  </Col>
+                  <Col style={{ textAlign: "right" }}>
+                    <b>{work.position}</b>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <b>Projects : </b>
+                    {work.project}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <b>Responsibility : </b>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    {/* <ul>
+                      {splitRes.map((res) => (
+                        <li style={{ marginLeft: "1.5rem" }}>{res}</li>
+                      ))}
+                    </ul> */}
+                    <ul>
+                      {work.response.split(',').map((res) => (
+                        <li>{res}</li>
+                      ))}
+                      
+                    </ul>
+                  </Col>
+                </Row>
+                  </Row>
+                ))}
+                <Row style={{ textAlign: "left" }}>
+                  <h4>
+                    <b>Education</b>
+                  </h4>
+                </Row>
+                <Row className="mb-3">
+                  {(degree != "" || gradYear != "") && (
+                    <Row>
+                      <Col>{degree}</Col>
+                      <Col style={{ textAlign: "right" }}>{gradYear}</Col>
+                    </Row>
+                  )}
+                  {(univ != "" || gpa != "") && (
+                    <Row>
+                      <Col>{univ}</Col>
+                      <Col style={{ textAlign: "right" }}>{gpa}</Col>
                     </Row>
                   )}
                 </Row>
